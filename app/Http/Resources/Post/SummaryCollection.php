@@ -11,13 +11,7 @@ class SummaryCollection extends ResourceCollection
     {
         return [
             'data' => $this->collection->map(function ($item) {
-                return [
-                    'token'      => $item->token,
-                    'text'       => $item->text,
-                    'likes'      => $item->likes,
-                    'images'     => [],
-                    'created_at' => $item->created_at
-                ];
+                return new DetailResource($item);
             }),
             'meta' => [
                 'total'        => $this->total(),

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $id
@@ -24,12 +26,12 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function images()
+    public function images(): HasMany
     {
         return $this->hasMany(PostImage::class);
     }
 
-    public function hashtags()
+    public function hashTags(): BelongsToMany
     {
         return $this->belongsToMany(Hashtag::class, 'post_hashtag');
     }

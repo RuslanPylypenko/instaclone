@@ -13,8 +13,9 @@ class DetailResource extends JsonResource
             'token'      => $this->token,
             'text'       => $this->text,
             'likes'      => $this->likes,
-            'images'     => [],
-            'comments'   => [],
+            'images'     => ImageResource::collection($this->whenLoaded('images')),
+            'comments'   => CommentResource::collection($this->whenLoaded('comments')),
+            'hashtags'   => HashTagsResource::collection($this->whenLoaded('hashTags')),
             'created_at' => $this->created_at
         ];
     }
