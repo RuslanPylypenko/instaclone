@@ -12,10 +12,11 @@ class SummaryCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function ($item) {
                 return [
-                    'id'    => $item->id,
-                    'token' => $item->token,
-                    'text'  => $item->last_name,
-                    'likes' => $item->avatar,
+                    'token'      => $item->token,
+                    'text'       => $item->text,
+                    'likes'      => $item->likes,
+                    'images'     => [],
+                    'created_at' => $item->created_at
                 ];
             }),
             'meta' => [

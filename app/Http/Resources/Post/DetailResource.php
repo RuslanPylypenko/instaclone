@@ -10,7 +10,12 @@ class DetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'token' => $this->token,
+            'token'      => $this->token,
+            'text'       => $this->text,
+            'likes'      => $this->likes,
+            'images'     => [],
+            'comments'   => [],
+            'created_at' => $this->created_at
         ];
     }
 }

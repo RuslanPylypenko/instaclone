@@ -26,14 +26,15 @@ class PostController extends Controller
 
     public function createPost(CreatePostRequest $request): JsonResponse
     {
-        try {
-            return response()->json([
-                'data' => new DetailResource($this->postService->addPost($request->all()))
-            ]);
-        } catch (\Throwable $throwable) {
-            return response()->json([
-                'error' => $throwable->getMessage()
-            ]);
-        }
+        return response()->json([
+            'data' => new DetailResource($this->postService->addPost($request->all()))
+        ]);
+    }
+
+    public function show(string $token): JsonResponse
+    {
+        return response()->json([
+            'data' => new DetailResource($this->postsRepository->getByToken($token))
+        ]);
     }
 }
