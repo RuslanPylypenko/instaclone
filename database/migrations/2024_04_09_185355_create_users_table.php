@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('nick');
+            $table->string('nick')->unique();
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('avatar')->nullable();
-            $table->text('bio')->nullable();
+            $table->string('bio')->nullable();
             $table->timestamp('last_visit')->nullable();
             $table->date('birth_date');
             $table->timestamps();
