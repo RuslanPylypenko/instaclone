@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 interface UsersRepository
 {
-    public function getUsers(): array;
-
-    public function findUser(string $query): array;
+    public function findAll(?string $query): LengthAwarePaginator;
 }
