@@ -25,27 +25,16 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'email',
         'password',
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -62,5 +51,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function followers()
     {
         return $this->belongsToMany(User::class, 'user_follows', 'following_id', 'follower_id');
+    }
+
+    public function isFollowing(User $otherUser)
+    {
+        return $this->followings()->where('following_id', $otherUser->id)->exists();
     }
 }
