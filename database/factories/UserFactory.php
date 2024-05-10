@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -26,5 +28,12 @@ class UserFactory extends Factory
             'birth_date' => fake()->dateTimeBetween('-80 years', '-10 years'),
             'password' => static::$password ??= Hash::make('password'),
         ];
+    }
+
+    public function withPosts($count = 3)
+    {
+        return $this->afterCreating(function (User $user) use ($count) {
+            $user->posts()->saveMany(Post::factory()->count($count)->make());
+        });
     }
 }
