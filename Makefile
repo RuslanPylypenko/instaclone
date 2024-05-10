@@ -13,3 +13,9 @@ docker-down:
 
 bash:
 	docker exec -it trend-app bash
+
+migrate:
+	docker-compose run --rm php-fpm php artisan migrate
+
+fresh:
+	docker-compose run --rm php-fpm php artisan migrate:fresh --seed

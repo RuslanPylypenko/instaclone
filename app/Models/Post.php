@@ -31,6 +31,11 @@ class Post extends Model
         return $this->hasMany(PostImage::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function hashTags(): BelongsToMany
     {
         return $this->belongsToMany(Hashtag::class, 'post_hashtag');
