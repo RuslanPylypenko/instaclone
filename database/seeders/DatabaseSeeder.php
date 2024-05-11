@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         $hashtags = Hashtag::all();
 
-        User::factory(10)->create()->each(function (User $user) use ($hashtags) {
+        User::factory(1000)->create()->each(function (User $user) use ($hashtags) {
             $user->posts()->saveMany(
                 Post::factory(random_int(4,20))->create(['author_id' => $user->id])->each(function (Post $post) use ($hashtags) {
                     $post->comments()->saveMany(

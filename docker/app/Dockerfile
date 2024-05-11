@@ -12,7 +12,10 @@ RUN apk add --no-cache \
     zlib-dev \
     mysql-client \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql
+    rabbitmq-c-dev \
+    && pecl install amqp \
+    && docker-php-ext-install bcmath sockets pdo pdo_mysql \
+    && docker-php-ext-enable amqp
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

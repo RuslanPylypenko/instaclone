@@ -10,7 +10,7 @@ services:
       - php-fpm
 
   php-fpm:
-    container_name: trend-app
+    container_name: app
     build:
       context: ./docker/app
       args:
@@ -34,6 +34,12 @@ services:
       - "33061:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
   mysql_data:
