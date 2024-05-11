@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Post\SummaryCollection;
-use App\Models\User;
+use App\Models\User\UserEntity;
 use App\Repositories\PostsRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class FeedController extends Controller
 
     public function feed(Request $request): JsonResponse
     {
-        /** @var User $user */
+        /** @var UserEntity $user */
         $user = $request->getUser();
         return response()->json([
             'data' => new SummaryCollection($this->postsRepository->getFeed($user))

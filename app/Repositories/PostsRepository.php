@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Models\Hashtag;
 use App\Models\Post;
-use App\Models\User;
+use App\Models\User\UserEntity;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface PostsRepository
@@ -17,7 +17,7 @@ interface PostsRepository
 
     public function findByHashTag(Hashtag $hashtag): LengthAwarePaginator;
 
-    public function getFeed(User $user): LengthAwarePaginator;
+    public function getFeed(UserEntity $user): LengthAwarePaginator;
 
     public function findPost(string $query);
 }

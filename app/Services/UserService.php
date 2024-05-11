@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\User\UserEntity;
 
 interface UserService
 {
-    public function createUser(array $data): User;
+    public function createUser(array $data): UserEntity;
 
-    public function updateUser(User $user, array $data): User;
+    public function updateUser(UserEntity $user, array $data): UserEntity;
 
-    public function follow(User $from, User $to): void;
+    public function follow(UserEntity $from, UserEntity $to): void;
 
-    public function unFollow(User $from, User $to): void;
+    public function unFollow(UserEntity $from, UserEntity $to): void;
 }
 

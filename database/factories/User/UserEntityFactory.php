@@ -1,17 +1,16 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\User;
 
 use App\Models\Post;
-use App\Models\User;
+use App\Models\User\UserEntity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User\UserEntity>
  */
-class UserFactory extends Factory
+class UserEntityFactory extends Factory
 {
     protected static ?string $password;
 
@@ -21,10 +20,11 @@ class UserFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'nick' => fake()->unique()->userName,
+            'status' => fake()->randomElement(['new', 'confirmed']), //todo resolve it to real
             'email' => fake()->unique()->safeEmail(),
             'avatar' => null,
             'bio' => fake()->realTextBetween(),
-            'last_visit' => fake()->dateTimeBetween('-20 days'),
+            'last_visit' => fake()->dateTimeBetween('-3 years'),
             'birth_date' => fake()->dateTimeBetween('-80 years', '-10 years'),
             'password' => static::$password ??= Hash::make('password'),
         ];
@@ -32,7 +32,7 @@ class UserFactory extends Factory
 
     public function withPosts($count = 3)
     {
-        return $this->afterCreating(function (User $user) use ($count) {
+        return $this->afterCreating(function (UserEntity $user) use ($count) {
             $user->posts()->saveMany(Post::factory()->count($count)->make());
         });
     }

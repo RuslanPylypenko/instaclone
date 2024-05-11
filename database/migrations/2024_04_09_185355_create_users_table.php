@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('status');
             $table->string('nick')->unique();
             $table->string('first_name');
             $table->string('last_name')->nullable();
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->timestamp('last_visit')->nullable();
             $table->date('birth_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

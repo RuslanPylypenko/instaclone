@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,9 +21,11 @@ use Illuminate\Notifications\Notifiable;
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
-class User extends Authenticatable
+class UserEntity extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    protected $table = 'users';
 
     protected $fillable = [
         'email',
@@ -47,15 +50,15 @@ class User extends Authenticatable
 
     public function followings()
     {
-        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'following_id');
+        return $this->belongsToMany(UserEntity::class, 'user_follows', 'follower_id', 'following_id');
     }
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'user_follows', 'following_id', 'follower_id');
+        return $this->belongsToMany(UserEntity::class, 'user_follows', 'following_id', 'follower_id');
     }
 
-    public function isFollowing(User $otherUser)
+    public function isFollowing(UserEntity $otherUser)
     {
         return $this->followings()->where('following_id', $otherUser->id)->exists();
     }

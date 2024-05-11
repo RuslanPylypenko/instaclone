@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\User\DetailResource;
 use App\Http\Resources\User\SummaryCollection;
-use App\Models\User;
+use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
@@ -25,24 +25,24 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(User $user): JsonResponse
+    public function show(UserEntity $user): JsonResponse
     {
         return response()->json([
             'data' => new DetailResource($user)
         ]);
     }
 
-    public function follow(User $user, Request $request): JsonResponse
+    public function follow(UserEntity $user, Request $request): JsonResponse
     {
-        /** @var User $auth */
+        /** @var UserEntity $auth */
         $auth = $request->user();
         $this->userService->follow($auth, $user);
         return response('', 200)->json();
     }
 
-    public function unfollow(User $user, Request $request): JsonResponse
+    public function unfollow(UserEntity $user, Request $request): JsonResponse
     {
-        /** @var User $auth */
+        /** @var UserEntity $auth */
         $auth = $request->user();
         $this->userService->unFollow($auth, $user);
         return response('', 200)->json();

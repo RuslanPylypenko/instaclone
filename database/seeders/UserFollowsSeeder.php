@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\User\UserEntity;
 use Illuminate\Database\Seeder;
 
 class UserFollowsSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::all();
+        $users = UserEntity::all();
 
         foreach ($users as $user) {
             $followingCount = rand(1, 5);
