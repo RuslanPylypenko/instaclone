@@ -45,6 +45,13 @@ return [
                     'vhost' => env('RABBITMQ_VHOST', '/'),
                 ],
             ],
+            'options' => [
+                'queue' => [
+                    'reroute_failed' => true,
+                    'failed_exchange' => 'failed-exchange',
+                    'failed_routing_key' => 'application-x.%s',
+                ],
+            ],
             'worker' => env('RABBITMQ_WORKER', 'default'),
         ],
 

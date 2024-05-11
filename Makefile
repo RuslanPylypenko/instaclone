@@ -15,7 +15,7 @@ bash:
 	docker exec -it app bash
 
 worker:
-	docker exec -it app php artisan queue:work rabbitmq --timeout=0
+	docker exec -it app php artisan queue:work --timeout=3
 
 migrate:
 	docker-compose run --rm php-fpm php artisan migrate

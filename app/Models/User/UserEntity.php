@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email
  * @property string $password
  * @property string $nick
+ * @property string $status
  * @property string $first_name
  * @property null|string $last_name
  * @property null|string $avatar
@@ -35,6 +36,15 @@ class UserEntity extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function setStatus(UserStatus $status): void
+    {
+        if ($this->status === $status->value) {
+            throw new \LogicException(sprintf('Status is already set as %s', $status->value));
+        }
+
+        $this->status = $status->value;
+    }
 
     protected function casts(): array
     {

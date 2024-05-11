@@ -4,9 +4,28 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Models\User\UserEntity;
+use App\Models\User\UserStatus;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface UsersRepository
+class UsersRepository
 {
-    public function findAll(?string $query): LengthAwarePaginator;
+    public function findAll(?string $query): LengthAwarePaginator
+    {
+        //todo upgrade it
+        $q = UserEntity::query();
+        return $q->paginate(10);
+    }
+
+    /**
+     * @return Collection<UserEntity>
+     */
+    public function findUncheckedInactive(): Collection
+    {
+        return UserEntity::query()
+        ->whereDate('last_visit', '<=', now()->add('-1 year'))
+        ->whereNot('status', '=', UserStatus::LONG_TIME_INACTIVE->value)
+        ->get();
+    }
 }
