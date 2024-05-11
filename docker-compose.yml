@@ -23,6 +23,14 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=Docker"
 
+  cron:
+    build:
+      context: './docker/cron'
+    volumes:
+      - .:/var/www/html
+    user: root
+    restart: on-failure
+
   mysql:
     image: mysql:8.0
     environment:

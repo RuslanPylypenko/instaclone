@@ -26,8 +26,6 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; \
        pecl install xdebug  && docker-php-ext-enable xdebug; \
     fi;
 
-
-
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 

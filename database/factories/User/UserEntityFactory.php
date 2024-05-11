@@ -2,8 +2,6 @@
 
 namespace Database\Factories\User;
 
-use App\Models\Post;
-use App\Models\User\UserEntity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,16 +22,9 @@ class UserEntityFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'avatar' => null,
             'bio' => fake()->realTextBetween(),
-            'last_visit' => fake()->dateTimeBetween('-3 years'),
+            'last_visit' => fake()->dateTimeBetween('-18 month'),
             'birth_date' => fake()->dateTimeBetween('-80 years', '-10 years'),
             'password' => static::$password ??= Hash::make('password'),
         ];
-    }
-
-    public function withPosts($count = 3)
-    {
-        return $this->afterCreating(function (UserEntity $user) use ($count) {
-            $user->posts()->saveMany(Post::factory()->count($count)->make());
-        });
     }
 }
