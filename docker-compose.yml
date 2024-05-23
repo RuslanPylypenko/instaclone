@@ -8,6 +8,8 @@ services:
       - "8081:80"
     depends_on:
       - php-fpm
+    networks:
+      - mynetwork
 
   php-fpm:
     container_name: app
@@ -22,6 +24,8 @@ services:
     user: 1000:1000
     environment:
       PHP_IDE_CONFIG: "serverName=Docker"
+    networks:
+      - mynetwork
 
   cron:
     build:
@@ -30,6 +34,8 @@ services:
       - .:/var/www/html
     user: root
     restart: on-failure
+    networks:
+      - mynetwork
 
   mysql:
     image: mysql:8.0
@@ -42,15 +48,43 @@ services:
       - "33061:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+  storage:
+    build:
+      context: ./docker/storage
+    volumes:
+      - ./storage/app/public:/app
+    ports:
+      - "8083:80"
+
+  storage-ftp:
+    image: stilliard/pure-ftpd
+    environment:
+      FTP_USER_NAME: app
+      FTP_USER_PASS: secret
+      FTP_USER_HOME: /app
+    volumes:
+      - ./storage/app/public:/app
+    platform: linux/amd64
+    networks:
+      - mynetwork
 
   rabbitmq:
     image: rabbitmq:3.9-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - mynetwork
 
 volumes:
   mysql_data:
+
+networks:
+  mynetwork:
+    driver: bridge
 
 
 
