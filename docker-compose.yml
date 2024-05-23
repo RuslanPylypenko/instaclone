@@ -55,7 +55,7 @@ services:
     build:
       context: ./docker/storage
     volumes:
-      - ./storage/app/public:/app
+      - ./storage/app/public:/app/public
     ports:
       - "8083:80"
 
@@ -66,7 +66,7 @@ services:
       FTP_USER_PASS: secret
       FTP_USER_HOME: /app
     volumes:
-      - ./storage/app/public:/app
+      - ./storage/app/public:/app/public
     platform: linux/amd64
     networks:
       - mynetwork
