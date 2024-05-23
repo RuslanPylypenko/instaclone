@@ -62,9 +62,9 @@ services:
   storage-ftp:
     image: stilliard/pure-ftpd
     environment:
-      FTP_USER_NAME: app
-      FTP_USER_PASS: secret
-      FTP_USER_HOME: /app
+      FTP_USER_NAME: ${STORAGE_FTP_USERNAME}
+      FTP_USER_PASS: ${STORAGE_FTP_PASSWORD}
+      FTP_USER_HOME: ${STORAGE_FTP_HOME}
     volumes:
       - ./storage/app/public:/app/public
     platform: linux/amd64
