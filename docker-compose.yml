@@ -57,7 +57,7 @@ services:
     volumes:
       - ./storage/app/public:/app/public
     ports:
-      - "8083:80"
+      - ${STORAGE_PORT:-8083}:80
 
   storage-ftp:
     image: stilliard/pure-ftpd
