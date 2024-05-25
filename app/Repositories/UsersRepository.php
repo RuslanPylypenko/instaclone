@@ -18,6 +18,11 @@ class UsersRepository
         return $q->paginate(10);
     }
 
+    public function findByEmail(string $email): ?UserEntity
+    {
+       return UserEntity::where('email', $email)->first();
+    }
+
     /**
      * @return Collection<UserEntity>
      */
@@ -27,5 +32,10 @@ class UsersRepository
         ->whereDate('last_visit', '<=', now()->add('-1 year'))
         ->whereNot('status', '=', UserStatus::LONG_TIME_INACTIVE->value)
         ->get();
+    }
+
+    public function getByConfirmToken(string $token): UserEntity
+    {
+        return UserEntity::where('confirm_token', $token)->firstOrFail();
     }
 }

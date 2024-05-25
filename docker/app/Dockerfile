@@ -17,6 +17,9 @@ RUN apk add --no-cache \
     && docker-php-ext-install bcmath sockets pdo pdo_mysql \
     && docker-php-ext-enable amqp
 
+COPY ./wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod 555 /usr/local/bin/wait-for-it
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ARG INSTALL_XDEBUG=false

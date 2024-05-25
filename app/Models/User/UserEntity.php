@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property int $id,
@@ -19,18 +20,27 @@ use Illuminate\Notifications\Notifiable;
  * @property null|string $bio
  * @property \DateTime $last_visit
  * @property \DateTime $birth_date
+ * @property string $confirm_token
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
 class UserEntity extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $table = 'users';
 
     protected $fillable = [
         'email',
         'password',
+        'status',
+        'nick',
+        'first_name',
+        'last_name',
+        'avatar',
+        'bio',
+        'last_visit',
+        'birth_date',
     ];
 
     protected $hidden = [
@@ -44,6 +54,16 @@ class UserEntity extends Authenticatable
         }
 
         $this->status = $status->value;
+    }
+
+    public function confirm(): void
+    {
+        if ($this->confirm_token === null) {
+            throw new \LogicException('User already confirmed.');
+        }
+
+        $this->confirm_token = null;
+        $this->setStatus(UserStatus::CONFIRMED);
     }
 
     protected function casts(): array
