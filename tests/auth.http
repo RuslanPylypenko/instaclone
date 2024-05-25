@@ -1,3 +1,16 @@
+POST http://localhost:8081/api/auth/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "first_name": "Test",
+    "nick": "agent008",
+    "email": "test@example1.com",
+    "password": "password",
+    "birth_date": "2020-02-02"
+}
+
+###
 POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 Accept: application/json

@@ -21,7 +21,7 @@ docker-pull:
 bash:
 	docker exec -it app bash
 
-api-init: composer-install migrate jwt-generate
+api-init: composer-install migrate
 
 composer-install:
 	docker-compose run --rm php-fpm composer install
@@ -37,6 +37,3 @@ migrate:
 
 fresh:
 	docker-compose run --rm php-fpm php artisan migrate:fresh --seed
-
-jwt-generate:
-	docker-compose run --rm php-fpm php artisan jwt:secret -f
