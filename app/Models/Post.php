@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User\UserEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -21,7 +22,13 @@ class Post extends Model
 {
     use HasFactory;
 
-    public function user()
+    protected $fillable = [
+        'text',
+        'likes',
+        'author_id',
+    ];
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(UserEntity::class);
     }

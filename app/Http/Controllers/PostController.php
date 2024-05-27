@@ -26,8 +26,10 @@ class PostController extends Controller
 
     public function createPost(CreatePostRequest $request): JsonResponse
     {
+        $validatedData = $request->validated();
+
         return response()->json([
-            'data' => new DetailResource($this->postService->addPost($request->all()))
+            'data' => new DetailResource($this->postService->addPost($validatedData))
         ]);
     }
 
