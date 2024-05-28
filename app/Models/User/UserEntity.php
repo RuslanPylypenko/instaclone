@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Post;
+use App\Services\User\PasswordHasher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +21,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property null|string $bio
  * @property \DateTime $last_visit
  * @property \DateTime $birth_date
- * @property string $confirm_token
+ * @property null|string $confirm_token
+ * @property null|string $reset_password_token
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
@@ -48,6 +50,43 @@ class UserEntity extends Authenticatable
         'password',
     ];
 
+    //================================
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getNick(): string
+    {
+        return $this->nick;
+    }
+
+    public function setNick(string $nick): void
+    {
+        $this->nick = $nick;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function setStatus(UserStatus $status): void
     {
         if ($this->status === $status->value) {
@@ -57,22 +96,72 @@ class UserEntity extends Authenticatable
         $this->status = $status->value;
     }
 
-    public function confirm(): void
+    public function getFirstName(): string
     {
-        if ($this->confirm_token === null) {
-            throw new \LogicException('User already confirmed.');
-        }
-
-        $this->confirm_token = null;
-        $this->setStatus(UserStatus::CONFIRMED);
+        return $this->first_name;
     }
 
-    protected function casts(): array
+    public function setFirstName(string $first_name): void
     {
-        return [
-            'password' => 'hashed',
-        ];
+        $this->first_name = $first_name;
     }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(?string $last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): void
+    {
+        $this->bio = $bio;
+    }
+
+    public function getLastVisit(): \DateTime
+    {
+        return $this->last_visit;
+    }
+
+    public function setLastVisit(\DateTime $last_visit): void
+    {
+        $this->last_visit = $last_visit;
+    }
+
+    public function getBirthDate(): \DateTime
+    {
+        return $this->birth_date;
+    }
+
+    public function setBirthDate(\DateTime $birth_date): void
+    {
+        $this->birth_date = $birth_date;
+    }
+
+    public function getConfirmToken(): ?string
+    {
+        return $this->confirm_token;
+    }
+
+    //================================
 
     public function posts()
     {
@@ -92,5 +181,30 @@ class UserEntity extends Authenticatable
     public function isFollowing(UserEntity $otherUser)
     {
         return $this->followings()->where('following_id', $otherUser->id)->exists();
+    }
+
+    public function confirm(): void
+    {
+        if ($this->confirm_token === null) {
+            throw new \LogicException('User already confirmed.');
+        }
+
+        $this->confirm_token = null;
+        $this->setStatus(UserStatus::CONFIRMED);
+    }
+
+    public function setResetPasswordToken(string $token): void
+    {
+        if ($this->reset_password_token !== null) {
+            throw new \LogicException('User already requested reset password.');
+        }
+
+        $this->reset_password_token = $token;
+    }
+
+    public function resetPassword(string $password, PasswordHasher $passwordHasher): void
+    {
+        $this->password = $passwordHasher->hash($password);
+        $this->reset_password_token = null;
     }
 }

@@ -16,6 +16,7 @@ class SignUpService
         private UsersRepository $usersRepository,
         private ConfirmTokenGenerator $confirmTokenGenerator,
         private EventDispatcherInterface $eventDispatcher,
+        private PasswordHasher $passwordHasher,
     ) {
     }
 
@@ -26,7 +27,7 @@ class SignUpService
             'last_name'     => $data['last_name'] ?? null,
             'nick'          => $data['email'],
             'email'         => $data['email'],
-            'password'      => Hash::make($data['password']),
+            'password'      => $this->passwordHasher->hash($data['password']),
             'birth_date'    => $data['birth_date'],
             'confirm_token' => $this->confirmTokenGenerator->generate(),
             'status'        => UserStatus::NEW->value,
