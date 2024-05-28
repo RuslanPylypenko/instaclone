@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('bio')->nullable();
             $table->timestamp('last_visit')->nullable();
+            $table->string('confirm_token', 32)->nullable();
             $table->date('birth_date');
             $table->timestamps();
             $table->softDeletes();

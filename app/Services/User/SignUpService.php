@@ -2,31 +2,37 @@
 
 namespace App\Services\User;
 
+use App\Events\UserConfirmedEvent;
+use App\Events\UserRegisteredEvent;
 use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use App\Repositories\UsersRepository;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SignUpService
 {
     public function __construct(
         private UsersRepository $usersRepository,
+        private ConfirmTokenGenerator $confirmTokenGenerator,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function signUpRequest(array $data): void
     {
-        UserEntity::create([
-            'first_name' => $data['first_name'],
-            'last_name'  => $data['last_name'] ?? null,
-            'nick'       => $data['email'],
-            'email'      => $data['email'],
-            'password'   => Hash::make($data['password']),
-            'birth_date' => $data['birth_date'],
-            'status'     => UserStatus::NEW->value,
+        $user = UserEntity::create([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'] ?? null,
+            'nick'          => $data['email'],
+            'email'         => $data['email'],
+            'password'      => Hash::make($data['password']),
+            'birth_date'    => $data['birth_date'],
+            'confirm_token' => $this->confirmTokenGenerator->generate(),
+            'status'        => UserStatus::NEW->value,
         ]);
 
-        //event
+        $this->eventDispatcher->dispatch(new UserRegisteredEvent($user));
     }
 
     public function signUpConfirm(string $token): void
@@ -35,6 +41,6 @@ class SignUpService
         $user->confirm();
         $user->save();
 
-        //event
+        $this->eventDispatcher->dispatch(new UserConfirmedEvent($user));
     }
 }

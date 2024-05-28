@@ -40,6 +40,7 @@ class UserEntity extends Authenticatable
         'avatar',
         'bio',
         'last_visit',
+        'confirm_token',
         'birth_date',
     ];
 
