@@ -1,42 +1,45 @@
 <?php
 
-namespace App\Services\User;
+namespace App\UseCases\User;
 
 use App\Events\UserConfirmedEvent;
 use App\Events\UserRegisteredEvent;
 use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use App\Repositories\UsersRepository;
-use Illuminate\Support\Facades\Hash;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Services\PasswordHasher;
+use App\Services\Tokenizer;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class SignUpService
+class SignUp
 {
     public function __construct(
-        private UsersRepository $usersRepository,
-        private ConfirmTokenGenerator $confirmTokenGenerator,
-        private EventDispatcherInterface $eventDispatcher,
-        private PasswordHasher $passwordHasher,
+        private UsersRepository          $usersRepository,
+        private Tokenizer                $tokenizer,
+        private EventDispatcher     $eventDispatcher,
+        private PasswordHasher           $passwordHasher,
     ) {
     }
 
-    public function signUpRequest(array $data): void
+    public function request(array $data): UserEntity
     {
         $user = UserEntity::create([
             'first_name'    => $data['first_name'],
             'last_name'     => $data['last_name'] ?? null,
-            'nick'          => $data['email'],
+            'nick'          => $data['nick'],
             'email'         => $data['email'],
             'password'      => $this->passwordHasher->hash($data['password']),
             'birth_date'    => $data['birth_date'],
-            'confirm_token' => $this->confirmTokenGenerator->generate(),
+            'confirm_token' => $this->tokenizer->generate(),
             'status'        => UserStatus::NEW->value,
         ]);
 
         $this->eventDispatcher->dispatch(new UserRegisteredEvent($user));
+
+        return $user;
     }
 
-    public function signUpConfirm(string $token): void
+    public function confirm(string $token): void
     {
         $user = $this->usersRepository->getByConfirmToken($token);
         $user->confirm();

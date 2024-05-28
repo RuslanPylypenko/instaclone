@@ -10,21 +10,21 @@ use Illuminate\Http\Request;
 use App\Http\Resources\User\DetailResource;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
-use App\Services\User\SignUpService;
+use App\UseCases\User\SignUp;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function __construct(
-        private SignUpService $signUpService,
+        private SignUp          $signUpService,
         private UsersRepository $usersRepository,
     ) {
     }
 
     public function register(UserRegisterRequest $request): JsonResponse
     {
-        $this->signUpService->signUpRequest($request->all());
+        $this->signUpService->request($request->all());
 
         return response()->json([
             'message' => 'User Created',
@@ -33,7 +33,7 @@ class AuthController extends Controller
 
     public function confirm(Request $request): JsonResponse
     {
-        $this->signUpService->signUpConfirm($request['token']);
+        $this->signUpService->confirm($request['token']);
 
         return response()->json([
             'message' => 'Confirmed',

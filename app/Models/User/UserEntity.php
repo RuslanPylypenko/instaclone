@@ -3,7 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Post;
-use App\Services\User\PasswordHasher;
+use App\Services\PasswordHasher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
