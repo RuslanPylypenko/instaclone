@@ -21,7 +21,7 @@ class SignUpTest extends TestCase
     protected Tokenizer $tokenizer;
     protected PasswordHasher $passwordHasher;
     protected EventDispatcher $dispatcher;
-    protected $signUp;
+    protected SignUp $signUp;
 
     protected function setUp(): void
     {
