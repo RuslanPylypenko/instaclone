@@ -2,27 +2,27 @@
 
 namespace App\UseCases\User;
 
-use App\Events\UserConfirmedEvent;
-use App\Events\UserRegisteredEvent;
+use App\Mail\Auth\ConfirmEmail;
 use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use App\Repositories\UsersRepository;
 use App\Services\PasswordHasher;
 use App\Services\Tokenizer;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Illuminate\Mail\Mailer;
 
 class SignUp
 {
     public function __construct(
-        private UsersRepository          $usersRepository,
-        private Tokenizer                $tokenizer,
-        private EventDispatcher     $eventDispatcher,
-        private PasswordHasher           $passwordHasher,
+        private UsersRepository $usersRepository,
+        private Tokenizer $tokenizer,
+        private PasswordHasher $passwordHasher,
+        private Mailer $mailer,
     ) {
     }
 
     public function request(array $data): UserEntity
     {
+        /** @var UserEntity $user */
         $user = UserEntity::create([
             'first_name'    => $data['first_name'],
             'last_name'     => $data['last_name'] ?? null,
@@ -31,10 +31,10 @@ class SignUp
             'password'      => $this->passwordHasher->hash($data['password']),
             'birth_date'    => $data['birth_date'],
             'confirm_token' => $this->tokenizer->generate(),
-            'status'        => UserStatus::NEW->value,
+            'status'        => UserStatus::WAIT->value,
         ]);
 
-        $this->eventDispatcher->dispatch(new UserRegisteredEvent($user));
+        $this->mailer->to($user->email)->send(new ConfirmEmail($user));
 
         return $user;
     }
@@ -44,7 +44,5 @@ class SignUp
         $user = $this->usersRepository->getByConfirmToken($token);
         $user->confirm();
         $user->save();
-
-        $this->eventDispatcher->dispatch(new UserConfirmedEvent($user));
     }
 }

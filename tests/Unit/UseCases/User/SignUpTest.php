@@ -55,20 +55,20 @@ class SignUpTest extends TestCase
             'first_name' => $firstName = 'Alex',
             'last_name'  => $lastName = 'Dron',
             'nick'       => $nick = 'agent007',
-            'email'      => $email = 'app1@test.mail',
+            'email'      => $email = 'app1@test.emails',
             'password'   => $password = 'password',
             'birth_date' => $date = (new \DateTime('22-08-2004')),
-            'status'     => $status = UserStatus::NEW->value,
+            'status'     => UserStatus::WAIT->value,
         ]);
 
-        $this->assertEquals($firstName, $user->getFirstName());
-        $this->assertEquals($lastName, $user->getLastName());
-        $this->assertEquals($nick, $user->getNick());
-        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($firstName, $user->first_name);
+        $this->assertEquals($lastName, $user->last_name);
+        $this->assertEquals($nick, $user->nick);
+        $this->assertEquals($email, $user->email);
         $this->assertTrue($this->passwordHasher->isValid($password, $user->getPassword()));
-        $this->assertEquals($date, $user->getBirthDate());
-        $this->assertNotNull($user->getConfirmToken());
-        $this->assertEquals($status, $user->getStatus());
+        $this->assertEquals($date, $user->birth_date);
+        $this->assertNotNull($user->confirm_token);
+        $this->assertTrue($user->isWait());
 
     }
 }
