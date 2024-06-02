@@ -13,10 +13,10 @@ docker-down:
 	docker-compose down --remove-orphans
 
 docker-down-clear:
-	docker-compose down -v --remove-orphans
+	docker compose down -v --remove-orphans
 
 docker-pull:
-	docker-compose pull
+	docker compose pull
 
 bash:
 	docker exec -it app bash
@@ -24,16 +24,16 @@ bash:
 api-init: composer-install migrate
 
 composer-install:
-	docker-compose run --rm php-fpm composer install
+	docker compose run --rm php-fpm composer install
 
 wait-db:
-	docker-compose run --rm php-fpm wait-for-it mysql:3306 -t 30
+	docker compose run --rm php-fpm wait-for-it mysql:3306 -t 30
 
 worker:
 	docker exec -it app php artisan queue:work --timeout=3
 
 migrate:
-	docker-compose run --rm php-fpm php artisan migrate
+	docker compose run --rm php-fpm php artisan migrate
 
 fresh:
-	docker-compose run --rm php-fpm php artisan migrate:fresh --seed
+	docker compose run --rm php-fpm php artisan migrate:fresh --seed
