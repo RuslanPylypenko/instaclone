@@ -2,16 +2,17 @@
 
 namespace Tests\Unit\UseCases\User;
 
-use App\Events\UserRegisteredEvent;
+use App\Mail\Auth\ConfirmEmail;
 use App\Models\User\UserStatus;
 use App\Repositories\UsersRepository;
 use App\Services\PasswordHasher;
 use App\Services\Tokenizer;
 use App\UseCases\User\SignUp;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Mail\Mailer;
 use Mockery;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Tests\TestCase;
+
 
 class SignUpTest extends TestCase
 {
@@ -20,7 +21,7 @@ class SignUpTest extends TestCase
     protected UsersRepository $usersRepository;
     protected Tokenizer $tokenizer;
     protected PasswordHasher $passwordHasher;
-    protected EventDispatcher $dispatcher;
+    protected Mailer $mailer;
     protected SignUp $signUp;
 
     protected function setUp(): void
@@ -30,13 +31,25 @@ class SignUpTest extends TestCase
         $this->usersRepository = Mockery::mock(UsersRepository::class);
         $this->tokenizer = new Tokenizer();
         $this->passwordHasher = new PasswordHasher();
-        $this->dispatcher = Mockery::mock(EventDispatcher::class);
+
+
+        // Мокінг для мейлера
+        $mailer = Mockery::mock(Mailer::class);
+        $mailer->shouldReceive('to')
+            ->with('app1@test.emails')
+            ->andReturn($mailer);
+        $mailer->shouldReceive('send')
+            ->with(Mockery::on(function ($arg) {
+                return $arg instanceof ConfirmEmail;
+            }))
+            ->andReturnNull();
+
 
         $this->signUp = new SignUp(
             $this->usersRepository,
             $this->tokenizer,
-            $this->dispatcher,
-            $this->passwordHasher
+            $this->passwordHasher,
+            $mailer
         );
     }
 
@@ -47,9 +60,6 @@ class SignUpTest extends TestCase
 
     public function test_request(): void
     {
-        $this->dispatcher
-            ->shouldReceive('dispatch')
-            ->with(Mockery::type(UserRegisteredEvent::class));
 
         $user = $this->signUp->request([
             'first_name' => $firstName = 'Alex',
@@ -69,6 +79,5 @@ class SignUpTest extends TestCase
         $this->assertEquals($date, $user->birth_date);
         $this->assertNotNull($user->confirm_token);
         $this->assertTrue($user->isWait());
-
     }
 }
