@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create('post_hashtag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->foreignId('hashtag_id')->constrained('hashtags')->onDelete('cascade');
+            $table->foreignId('hash_tag_id')->constrained('hash_tags')->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('post_hashtag');
+        Schema::dropIfExists('post_hash_tag');
     }
 };
