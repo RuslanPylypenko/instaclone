@@ -6,7 +6,7 @@ use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Resources\Post\DetailResource;
 use App\Http\Resources\Post\SummaryCollection;
 use App\Repositories\PostsRepository;
-use App\UseCases\PostService;
+use App\UseCases\Post\PostService;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
@@ -26,8 +26,10 @@ class PostController extends Controller
 
     public function createPost(CreatePostRequest $request): JsonResponse
     {
+        $validatedData = $request->validated();
+
         return response()->json([
-            'data' => new DetailResource($this->postService->addPost($request->all()))
+            'data' => new DetailResource($this->postService->addPost($validatedData))
         ]);
     }
 

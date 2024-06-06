@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
-class Hashtag extends Model
+class HashTag extends Model
 {
     use HasFactory;
 }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'ftp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,6 +34,13 @@ return [
             'driver' => 'local',
             'root' => storage_path('app1'),
             'throw' => false,
+        ],
+
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('STORAGE_FTP_HOST'),
+            'username' => env('STORAGE_FTP_USERNAME'),
+            'password' => env('STORAGE_FTP_PASSWORD'),
         ],
 
         'public' => [
