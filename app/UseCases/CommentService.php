@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\UseCases;
 
 use App\Models\Comment;
 use App\Models\Post;

@@ -6,8 +6,8 @@ namespace App\Models\User;
 
 enum UserStatus: string
 {
-    case NEW = 'new';
-    case CONFIRMED = 'confirmed';
+    case WAIT = 'wait';
+    case ACTIVE = 'active';
     case LONG_TIME_INACTIVE = 'inactive';
     case DELETED = 'deleted';
 

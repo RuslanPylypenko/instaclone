@@ -6,7 +6,7 @@ use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Resources\Post\DetailResource;
 use App\Http\Resources\Post\SummaryCollection;
 use App\Repositories\PostsRepository;
-use App\Services\Post\PostService;
+use App\UseCases\Post\PostService;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller

@@ -6,7 +6,7 @@ use App\Http\Resources\User\DetailResource;
 use App\Http\Resources\User\SummaryCollection;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
-use App\Services\UserService;
+use App\UseCases\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

@@ -3,9 +3,11 @@
 namespace App\Models\User;
 
 use App\Models\Post;
+use App\Services\PasswordHasher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property int $id,
@@ -19,23 +21,66 @@ use Illuminate\Notifications\Notifiable;
  * @property null|string $bio
  * @property \DateTime $last_visit
  * @property \DateTime $birth_date
+ * @property null|string $confirm_token
+ * @property null|string $reset_password_token
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
 class UserEntity extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $table = 'users';
 
     protected $fillable = [
         'email',
         'password',
+        'status',
+        'nick',
+        'first_name',
+        'last_name',
+        'avatar',
+        'bio',
+        'last_visit',
+        'confirm_token',
+        'birth_date',
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    //================================
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status === UserStatus::WAIT->value;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::ACTIVE;
+    }
+
+    public function confirm(): void
+    {
+        if ($this->confirm_token === null) {
+            throw new \LogicException('User already confirmed.');
+        }
+
+        $this->confirm_token = null;
+        $this->setStatus(UserStatus::ACTIVE);
+    }
 
     public function setStatus(UserStatus $status): void
     {
@@ -46,12 +91,22 @@ class UserEntity extends Authenticatable
         $this->status = $status->value;
     }
 
-    protected function casts(): array
+    public function setResetPasswordToken(string $token): void
     {
-        return [
-            'password' => 'hashed',
-        ];
+        if ($this->reset_password_token !== null) {
+            throw new \LogicException('User already requested reset password.');
+        }
+
+        $this->reset_password_token = $token;
     }
+
+    public function resetPassword(string $password, PasswordHasher $passwordHasher): void
+    {
+        $this->password = $passwordHasher->hash($password);
+        $this->reset_password_token = null;
+    }
+
+    //================================
 
     public function posts()
     {
