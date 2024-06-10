@@ -57,15 +57,16 @@ services:
     ports:
       - ${STORAGE_PORT:-8083}:80
 
-  storage-ftp:
-    image: stilliard/pure-ftpd
+  ftp-server:
     environment:
-      FTP_USER_NAME: ${STORAGE_FTP_USERNAME}
-      FTP_USER_PASS: ${STORAGE_FTP_PASSWORD}
-      FTP_USER_HOME: ${STORAGE_FTP_HOME}
+      - FTP_PASS=${STORAGE_FTP_PASSWORD:-app}
+      - FTP_USER=${STORAGE_FTP_USERNAME:-password}
+    image: garethflowers/ftp-server
+    ports:
+      - '20-21:20-21/tcp'
+      - '40000-40009:40000-40009/tcp'
     volumes:
-      - ./storage/app/public:/app/public
-    platform: linux/amd64
+      - ./storage/app/public:${STORAGE_FTP_HOME:-/home/app}
     networks:
       - mynetwork
 

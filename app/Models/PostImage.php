@@ -13,4 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 class PostImage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'file_path'
+    ];
 }

@@ -32,21 +32,25 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app1'),
+            'root' => storage_path('app'),
             'throw' => false,
         ],
 
         'ftp' => [
-            'driver' => 'ftp',
-            'host' => env('STORAGE_FTP_HOST'),
-            'username' => env('STORAGE_FTP_USERNAME'),
-            'password' => env('STORAGE_FTP_PASSWORD'),
+            'driver'   => 'ftp',
+            'host'     => env('STORAGE_FTP_HOST', 'localhost'),
+            'username' => env('STORAGE_FTP_USERNAME', 'app'),
+            'password' => env('STORAGE_FTP_PASSWORD', 'password'),
+            'port'     => (int)env('FTP_PORT', 21),
+            'passive'  => false,
+            'ssl'      => false,
+            'timeout'  => 2,
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app1/public'),
-            'url' => env('APP_URL').'/storage',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage/app/public',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -77,7 +81,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app1/public'),
+        public_path('storage') => storage_path('app/public'),
     ],
 
 ];
