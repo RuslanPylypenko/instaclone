@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
             }
         );
 
-        HashTag::factory(100)->create();
+        HashTag::factory(1)->create();
 
         $hashtags = HashTag::all();
 
-        UserEntity::factory(100)->create()->each(function (UserEntity $user) use ($hashtags) {
+        UserEntity::factory(1)->create()->each(function (UserEntity $user) use ($hashtags) {
             $user->posts()->saveMany(
                 Post::factory(random_int(4,20))->create(['author_id' => $user->id])->each(function (Post $post) use ($hashtags) {
                     $post->comments()->saveMany(

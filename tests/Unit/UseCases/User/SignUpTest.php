@@ -3,6 +3,7 @@
 namespace Tests\Unit\UseCases\User;
 
 use App\Mail\Auth\ConfirmEmail;
+use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use App\Repositories\UsersRepository;
 use App\Services\PasswordHasher;
@@ -16,7 +17,6 @@ use Tests\TestCase;
 
 class SignUpTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected UsersRepository $usersRepository;
     protected Tokenizer $tokenizer;
@@ -68,7 +68,7 @@ class SignUpTest extends TestCase
             'email'      => $email = 'app1@test.emails',
             'password'   => $password = 'password',
             'birth_date' => $date = (new \DateTime('22-08-2004')),
-            'status'     => UserStatus::WAIT->value,
+            'status'     => UserStatus::WAIT,
         ]);
 
         $this->assertEquals($firstName, $user->first_name);
@@ -79,5 +79,50 @@ class SignUpTest extends TestCase
         $this->assertEquals($date, $user->birth_date);
         $this->assertNotNull($user->confirm_token);
         $this->assertTrue($user->isWait());
+    }
+
+    public function test_confirm(): void
+    {
+        $user = UserEntity::create([
+            'first_name' => $firstName = 'Alex',
+            'last_name'  => $lastName = 'Dron',
+            'nick'       => $nick = 'agent008',
+            'email'      => $email = 'app2@test.emails',
+            'password'   => $password = 'password',
+            'birth_date' => $date = (new \DateTime('22-08-2004')),
+            'status'     => UserStatus::WAIT,
+        ]);
+        $user->confirm_token = $token = 'token';
+        $this->usersRepository->shouldReceive('getByConfirmToken')
+            ->with($token)
+            ->andReturn($user);
+
+        $this->signUp->confirm($token);
+
+        $this->assertNull($user->confirm_token);
+        $this->assertTrue($user->isActive());
+    }
+
+    public function test_confirm_active(): void
+    {
+        $user = UserEntity::create([
+            'first_name' => $firstName = 'Alex',
+            'last_name'  => $lastName = 'Dron',
+            'nick'       => $nick = 'agent003',
+            'email'      => $email = 'app3@test.emails',
+            'password'   => $password = 'password',
+            'birth_date' => $date = (new \DateTime('22-08-2004')),
+            'status'     => UserStatus::WAIT,
+        ]);
+        $user->confirm_token = $token = 'token';
+        $this->usersRepository->shouldReceive('getByConfirmToken')
+            ->with($token)
+            ->andReturn($user);
+
+        $this->signUp->confirm($token);
+
+        $this->expectExceptionMessage('User already confirmed.');
+
+        $this->signUp->confirm($token);
     }
 }

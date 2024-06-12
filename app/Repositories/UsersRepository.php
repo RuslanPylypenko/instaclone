@@ -38,4 +38,9 @@ class UsersRepository
     {
         return UserEntity::where('confirm_token', $token)->firstOrFail();
     }
+
+    public function getByResetPasswordToken(string $token): UserEntity
+    {
+        return UserEntity::where('reset_password_token', $token)->firstOrFail();
+    }
 }

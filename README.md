@@ -11,6 +11,5 @@ InstaClone is a social media application inspired by Instagram. It allows users 
 - **User Profiles**: Users can view their own and others' profiles with a list of their posts.
 - **Notification System**: Users receive notifications for likes, comments, and new followers.
 
-Добавить реквест зображення
-Зробити весь шлях для створеня поста
-Можливо спробувати написати тест
+Зробити запит на отримання постів користувачів (лента новин з пагінацією)
+Confirm token щоб був дійсний тільки певний час

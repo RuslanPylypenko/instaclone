@@ -13,6 +13,9 @@ class PostService
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function addPost(array $data): Post
     {
         $post = Post::create([

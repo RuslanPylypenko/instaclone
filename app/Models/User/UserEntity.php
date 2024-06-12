@@ -14,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $password
  * @property string $nick
- * @property string $status
+ * @property UserStatus $status
  * @property string $first_name
  * @property null|string $last_name
  * @property null|string $avatar
@@ -50,6 +50,14 @@ class UserEntity extends Authenticatable
         'password',
     ];
 
+    protected $casts = [
+        'last_visit' => 'datetime',
+        'birth_date' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'status' => UserStatus::class,
+    ];
+
     //================================
 
     public function getPassword(): string
@@ -64,7 +72,7 @@ class UserEntity extends Authenticatable
 
     public function isWait(): bool
     {
-        return $this->status === UserStatus::WAIT->value;
+        return $this->status === UserStatus::WAIT;
     }
 
     public function isActive(): bool
@@ -84,11 +92,11 @@ class UserEntity extends Authenticatable
 
     public function setStatus(UserStatus $status): void
     {
-        if ($this->status === $status->value) {
+        if ($this->status === $status) {
             throw new \LogicException(sprintf('Status is already set as %s', $status->value));
         }
 
-        $this->status = $status->value;
+        $this->status = $status;
     }
 
     public function setResetPasswordToken(string $token): void
