@@ -9,7 +9,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "league/flysystem-ftp": "^3.0",
+        "league/flysystem-ftp": "^3.28",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.0"
     },
     "require-dev": {

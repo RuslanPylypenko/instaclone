@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Post;
 
 use App\Models\Post;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,13 +15,12 @@ class ImageService
     public function uploadImage(Post $post, UploadedFile $image): void
     {
         $path = sprintf(
-            '%s/%s.%s',
-            Str::random(4),
+            '/images/%s/%s',
+            Str::random(3),
             $image->getClientOriginalName(),
-            $image->getClientOriginalExtension()
         );
 
-        if (Storage::put($path, $post)) {
+        if (Storage::put($path, $image->getContent())) {
             $post->images()->create([
                 'file_path' => $path,
             ]);

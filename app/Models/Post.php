@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $likes
  * @property \DateTime $createDate
  * @property \DateTime $updateDate
+ * @property UserEntity $author
  */
 class Post extends Model
 {
@@ -28,7 +29,7 @@ class Post extends Model
         'author_id',
     ];
 
-    public function user(): BelongsTo
+    public function author(): BelongsTo
     {
         return $this->belongsTo(UserEntity::class);
     }
