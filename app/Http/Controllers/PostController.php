@@ -7,7 +7,7 @@ use App\Http\Resources\Post\DetailResource;
 use App\Http\Resources\Post\SummaryCollection;
 use App\Repositories\PostsRepository;
 use App\Services\Post\PostService;
-use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -17,22 +17,21 @@ class PostController extends Controller
     ) {
     }
 
-    public function userPosts(int $userId): JsonResponse
+    public function userPosts(int $userId): Response
     {
         return response()->json([
             'data' => new SummaryCollection($this->postsRepository->findByUserId($userId))
         ]);
     }
 
-    public function createPost(CreatePostRequest $request): JsonResponse
+    public function createPost(CreatePostRequest $request): Response
     {
-
         return response()->json([
-            'data' => new DetailResource($this->postService->addPost($request->all()))
-        ]);
+            'data' => new DetailResource($this->postService->addPost(auth()->user(), $request->all()))
+        ], Response::HTTP_CREATED);
     }
 
-    public function show(string $token): JsonResponse
+    public function show(string $token): Response
     {
         return response()->json([
             'data' => new DetailResource($this->postsRepository->getByToken($token))

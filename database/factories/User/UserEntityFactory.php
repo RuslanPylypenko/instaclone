@@ -2,6 +2,7 @@
 
 namespace Database\Factories\User;
 
+use App\Models\User\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +19,7 @@ class UserEntityFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'nick' => fake()->unique()->userName,
-            'status' => fake()->randomElement(['new', 'confirmed']), //todo resolve it to real
+            'status' => fake()->randomElement([UserStatus::WAIT, UserStatus::ACTIVE]),
             'email' => fake()->unique()->safeEmail(),
             'avatar' => null,
             'bio' => fake()->realTextBetween(),

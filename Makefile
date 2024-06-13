@@ -1,4 +1,4 @@
-init: docker-down-clear docker-pull docker-build docker-up api-init storage-clear
+init: docker-down-clear storage-clear docker-pull docker-build docker-up api-init storage-clear
 up: docker-up
 build: docker-build
 down: docker-down
@@ -21,10 +21,10 @@ docker-pull:
 bash:
 	docker exec -it app bash
 
-api-init: composer-install migrate
+api-init: composer-install wait-db migrate fresh
 
 storage-clear:
-	docker run --rm -v "${PWD}/storage/app:/storage/app" -w /storage/app alpine sh -c "rm -rf ./images/*"
+	docker run --rm -v "${PWD}/storage/app/public:/storage/app/public" -w /storage/app/public alpine sh -c "rm -rf ./images/*"
 
 composer-install:
 	docker compose run --rm php-fpm composer install

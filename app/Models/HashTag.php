@@ -14,4 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class HashTag extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }

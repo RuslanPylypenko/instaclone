@@ -3,6 +3,7 @@
 namespace App\Services\Post;
 
 use App\Models\Post;
+use App\Models\User\UserEntity;
 
 class PostService
 {
@@ -16,12 +17,13 @@ class PostService
     /**
      * @throws \Exception
      */
-    public function addPost(array $data): Post
+    public function addPost(UserEntity $user, array $data): Post
     {
+        /** @var Post $post */
         $post = Post::create([
             'token' => $this->tokenGenerator->generate(),
             'text' => $data['text'],
-            'author_id' => $data['author_id'],
+            'author_id' => $user->getKey(),
             'likes' => 0,
         ]);
 
@@ -30,7 +32,7 @@ class PostService
         }
 
         foreach ($data['hashtags'] as $hashtag) {
-            $post->hashTags()->attach($hashtag);
+            $post->hashTags()->create(['name' => $hashtag]);
         }
 
         return $post;
