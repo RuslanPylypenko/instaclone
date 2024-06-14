@@ -41,6 +41,7 @@ class LoginController extends Controller implements HasMiddleware
                 'message' => 'Invalid Credentials'
             ], 401);
         }
+        //TODO explain this row
         $token = $user->createToken($user->nick.'-AuthToken')->plainTextToken;
         return response()->json([
             'access_token' => $token,

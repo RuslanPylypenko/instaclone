@@ -18,7 +18,7 @@ class UserEntityFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'nick' => fake()->unique()->userName,
-            'status' => fake()->randomElement(['new', 'confirmed']), //todo resolve it to real
+            'status' => fake()->randomElement(['active', 'wait', 'inactive']), //todo resolve it to real
             'email' => fake()->unique()->safeEmail(),
             'avatar' => null,
             'bio' => fake()->realTextBetween(),
