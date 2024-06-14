@@ -32,19 +32,7 @@ class UserEntity extends Authenticatable
 
     protected $table = 'users';
 
-    protected $fillable = [
-        'email',
-        'password',
-        'status',
-        'nick',
-        'first_name',
-        'last_name',
-        'avatar',
-        'bio',
-        'last_visit',
-        'confirm_token',
-        'birth_date',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
