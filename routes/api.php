@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', [UserController::class, 'index']);
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('register', [RegisterController::class, 'register']);
@@ -24,7 +23,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => ['api', 'auth:api'],
+    'middleware' => 'auth:confirmed',
 ], function ($router) {
     Route::post('/posts', [PostController::class, 'createPost'])->name('posts.store');
     Route::get('/posts/{token}', [PostController::class, 'show'])->name('posts.show');
