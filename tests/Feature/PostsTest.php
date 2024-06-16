@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
 use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,5 +39,31 @@ class PostsTest extends TestCase
 
         $response->assertCreated();
         $this->assertDatabaseCount('posts', 1);
+    }
+
+    public function test_post_show(): void
+    {
+        $user = UserEntity::factory()->create([
+            'status' => UserStatus::ACTIVE,
+        ]);
+
+        $post =  Post::factory()->create([
+            'author_id' => $user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($user, 'sanctum')
+            ->get(route('posts.show', ['token' => $post->token]));
+
+        $response->assertOk();
+
+        $response->assertJson([
+            'data' => [
+                'token'      => $post->token,
+                'text'       => $post->text,
+                'likes'      => $post->likes,
+                'created_at' => $post->created_at->format('Y-m-d H:i:s'),
+            ]
+        ]);
     }
 }

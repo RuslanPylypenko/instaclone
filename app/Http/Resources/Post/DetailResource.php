@@ -16,7 +16,7 @@ class DetailResource extends JsonResource
             'images'     => ImageResource::collection($this->whenLoaded('images')),
             'comments'   => CommentResource::collection($this->whenLoaded('comments')),
             'hashtags'   => HashTagsResource::collection($this->whenLoaded('hashTags')),
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }
