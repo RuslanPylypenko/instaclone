@@ -21,7 +21,7 @@ docker-pull:
 bash:
 	docker exec -it app bash
 
-api-init: composer-install wait-db migrate fresh
+api-init: composer-install wait-db migrate db-fresh
 
 storage-clear:
 	docker run --rm -v "${PWD}/storage/app/public:/storage/app/public" -w /storage/app/public alpine sh -c "rm -rf ./images/*"
@@ -38,5 +38,7 @@ worker:
 migrate:
 	docker compose run --rm php-fpm php artisan migrate
 
-fresh:
+db-fresh:
 	docker compose run --rm php-fpm php artisan migrate:fresh --seed
+
+fresh: storage-clear db-fresh
