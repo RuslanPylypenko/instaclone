@@ -19,9 +19,7 @@ class PostController extends Controller
 
     public function userPosts(int $userId): Response
     {
-        return response()->json([
-            'data' => new SummaryCollection($this->postsRepository->findByUserId($userId))
-        ]);
+        return response()->json(new SummaryCollection($this->postsRepository->findByUserId($userId)));
     }
 
     public function createPost(CreatePostRequest $request): Response

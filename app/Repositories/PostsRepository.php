@@ -13,7 +13,7 @@ class PostsRepository
 {
     public function findByUserId(int $userId): LengthAwarePaginator
     {
-        return Post::query()->paginate();
+        return Post::query()->where('author_id', $userId)->paginate();
     }
 
     public function getByToken(string $token): Post

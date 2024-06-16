@@ -66,4 +66,49 @@ class PostsTest extends TestCase
             ]
         ]);
     }
+
+    public function test_user_posts()
+    {
+        $user = UserEntity::factory()->create([
+            'status' => UserStatus::ACTIVE,
+        ]);
+
+        $user2 = UserEntity::factory()->create([
+            'status' => UserStatus::ACTIVE,
+        ]);
+
+        Post::factory(12)->create([
+            'author_id' => $user2->id,
+        ]);
+
+        Post::factory(3)->create([
+            'author_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->get(route('users.show.posts', ['userId' => $user->id]));
+
+        $response->assertOk();
+
+        $posts = Post::query()->where('author_id', $user->id)->get();
+
+        $response->assertJson([
+            'data' => $posts->map(function (Post $post) {
+                    return [
+                        'token'      => $post->token,
+                        'text'       => $post->text,
+                        'likes'      => $post->likes,
+                        'created_at' => $post->created_at->format('Y-m-d H:i:s'),
+                    ];
+                })->toArray(),
+            'meta' => [
+                'total'        => $posts->count(),
+                'per_page'     => 15,
+                'current_page' => 1,
+                'last_page'    => 1,
+                'from'         => 1,
+                'to'           => $posts->count(),
+            ],
+        ]);
+    }
 }
