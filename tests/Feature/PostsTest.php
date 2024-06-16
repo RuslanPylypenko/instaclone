@@ -30,14 +30,13 @@ class PostsTest extends TestCase
             'images' => [File::create('image.jpg', 1990)],
             'hashtags' => ['test'],
         ];
-        $response = $this->actingAs($user, 'api')->post(
+        $response = $this->actingAs($user, 'sanctum')->post(
             route('posts.store'),
             $data,
             ['Accept' => 'application/json']
         );
 
-
-        $this->assertDatabaseCount('posts', 1);
         $response->assertCreated();
+        $this->assertDatabaseCount('posts', 1);
     }
 }

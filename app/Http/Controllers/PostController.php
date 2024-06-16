@@ -27,7 +27,7 @@ class PostController extends Controller
     public function createPost(CreatePostRequest $request): Response
     {
         return response()->json([
-            'data' => new DetailResource($this->postService->addPost(auth()->user(), $request->all()))
+            'data' => new DetailResource($this->postService->addPost($request->user(), $request->all()))
         ], Response::HTTP_CREATED);
     }
 
