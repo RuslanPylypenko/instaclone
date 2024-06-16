@@ -3,8 +3,11 @@
 namespace App\Models\User;
 
 use App\Models\Post;
+use App\Models\PostLike;
 use App\Services\PasswordHasher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -122,5 +125,15 @@ class UserEntity extends Authenticatable
     public function isFollowing(UserEntity $otherUser)
     {
         return $this->followings()->where('following_id', $otherUser->id)->exists();
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(PostLike::class, 'user_id', 'id');
+    }
+
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'id');
     }
 }

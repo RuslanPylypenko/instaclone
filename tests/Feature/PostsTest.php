@@ -61,7 +61,7 @@ class PostsTest extends TestCase
             'data' => [
                 'token'      => $post->token,
                 'text'       => $post->text,
-                'likes'      => $post->likes,
+                'likes'      => $post->likes->count(),
                 'created_at' => $post->created_at->format('Y-m-d H:i:s'),
             ]
         ]);
@@ -79,7 +79,9 @@ class PostsTest extends TestCase
 
         Post::factory(12)->create([
             'author_id' => $user2->id,
-        ]);
+        ])->each(function (Post $post) use ($user) {
+            $post->likes()->create(['user_id' => $user->id]);
+        });
 
         Post::factory(3)->create([
             'author_id' => $user->id,
@@ -97,7 +99,7 @@ class PostsTest extends TestCase
                     return [
                         'token'      => $post->token,
                         'text'       => $post->text,
-                        'likes'      => $post->likes,
+                        'likes'      => $post->likes()->count(),
                         'created_at' => $post->created_at->format('Y-m-d H:i:s'),
                     ];
                 })->toArray(),

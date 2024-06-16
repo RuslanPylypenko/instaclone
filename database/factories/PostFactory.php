@@ -15,7 +15,6 @@ class PostFactory extends Factory
         return [
             'token' => app(TokenGenerator::class)->generate(),
             'text' => fake('uk-Ua')->text,
-            'likes' => random_int(2, 100),
         ];
     }
 }

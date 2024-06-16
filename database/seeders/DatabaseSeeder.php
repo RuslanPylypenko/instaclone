@@ -45,6 +45,17 @@ class DatabaseSeeder extends Seeder
             );
         });
 
+        $users = UserEntity::all();
+
+        Post::all()->each(function (Post $post) use ($users) {
+            $users->shuffle()
+                ->take(random_int(0, $users->count() - 1))
+                ->each(function (UserEntity $user) use ($post) {
+                    $user->likes()->create(['post_id' => $post->id]);
+                });
+        });
+
+
         $this->call(UserFollowsSeeder::class);
     }
 
