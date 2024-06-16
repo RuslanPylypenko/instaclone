@@ -28,4 +28,11 @@ class UserEntityFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
         ];
     }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => UserStatus::ACTIVE,
+        ]);
+    }
 }

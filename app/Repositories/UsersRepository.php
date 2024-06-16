@@ -13,9 +13,7 @@ class UsersRepository
 {
     public function findAll(?string $query): LengthAwarePaginator
     {
-        //todo upgrade it
-        $q = UserEntity::query();
-        return $q->paginate(10);
+        return UserEntity::query()->paginate();
     }
 
     public function findByEmail(string $email): ?UserEntity

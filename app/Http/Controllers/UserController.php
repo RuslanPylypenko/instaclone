@@ -14,15 +14,13 @@ class UserController extends Controller
 {
     public function __construct(
         private UsersRepository $usersRepository,
-        private UserService $userService,
+       // private UserService $userService,
     ) {
     }
 
     public function index(Request $request): JsonResponse
     {
-        return response()->json([
-            'data' => new SummaryCollection($this->usersRepository->findAll($request->get('query')))
-        ]);
+        return response()->json(new SummaryCollection($this->usersRepository->findAll($request->get('query'))));
     }
 
     public function show(UserEntity $user): JsonResponse
