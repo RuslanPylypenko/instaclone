@@ -51,7 +51,8 @@
             "@php artisan migrate --graceful --ansi"
         ],
         "validate": [
-            "pint"
+            "pint",
+            "phpstan analyse --memory-limit=512M"
         ]
     },
     "extra": {

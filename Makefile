@@ -46,3 +46,6 @@ fresh: storage-clear db-fresh
 validate:
 	docker compose run --rm php-fpm composer run validate
 
+test:
+	docker compose run --rm php-fpm php artisan test
+
