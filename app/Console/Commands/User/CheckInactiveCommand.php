@@ -4,7 +4,6 @@ namespace App\Console\Commands\User;
 
 use App\Jobs\User\CheckInactiveJob;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class CheckInactiveCommand extends Command
 {

@@ -31,7 +31,8 @@ class PostsRepository
         return Post::query()->paginate();
     }
 
-    public function findPost(string $query): ?Post {
+    public function findPost(string $query): ?Post
+    {
         return Post::query()->firstWhere('query', $query);
     }
 }

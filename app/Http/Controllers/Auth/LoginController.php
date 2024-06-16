@@ -29,19 +29,21 @@ class LoginController extends Controller implements HasMiddleware
     public function login(LoginRequest $request): JsonResponse
     {
         $user = $this->usersRepository->findByEmail($request['email']);
-        if (!$user || !Hash::check($request['password'], $user->password)) {
+        if (! $user || ! Hash::check($request['password'], $user->password)) {
             if ($user->isWait()) {
                 Auth::logout();
+
                 return response()->json([
-                    'message' => 'You need to confirm your account. Please check your email.'
+                    'message' => 'You need to confirm your account. Please check your email.',
                 ], 401);
             }
 
             return response()->json([
-                'message' => 'Invalid Credentials'
+                'message' => 'Invalid Credentials',
             ], 401);
         }
         $token = $user->createToken($user->nick.'-AuthToken')->plainTextToken;
+
         return response()->json([
             'access_token' => $token,
         ]);
@@ -54,7 +56,7 @@ class LoginController extends Controller implements HasMiddleware
         $user->tokens()->delete();
 
         return response()->json([
-            "message" => "logged out"
+            'message' => 'logged out',
         ]);
     }
 }

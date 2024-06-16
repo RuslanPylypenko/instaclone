@@ -20,7 +20,7 @@ class ResetPasswordController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except: ['reset'])
+            new Middleware('auth:sanctum', except: ['reset']),
         ];
     }
 
@@ -29,8 +29,9 @@ class ResetPasswordController extends Controller implements HasMiddleware
     {
         $user = $request->user();
         $this->resetPassword->request($user);
+
         return response()->json([
-            'message' => 'Check your email to continue...'
+            'message' => 'Check your email to continue...',
         ]);
     }
 
@@ -39,7 +40,7 @@ class ResetPasswordController extends Controller implements HasMiddleware
         $this->resetPassword->reset($request->token, $request->password);
 
         return response()->json([
-            'message' => 'Password was changed'
+            'message' => 'Password was changed',
         ]);
     }
 }

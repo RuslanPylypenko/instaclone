@@ -27,7 +27,7 @@ storage-clear:
 	docker run --rm -v "${PWD}/storage/app/public:/storage/app/public" -w /storage/app/public alpine sh -c "rm -rf ./images/*"
 
 composer-install:
-	docker compose run --rm php-fpm composer install
+	docker compose run --rm php-fpm composer install --dev
 
 wait-db:
 	docker compose run --rm php-fpm wait-for-it mysql:3306 -t 30
@@ -42,3 +42,7 @@ db-fresh:
 	docker compose run --rm php-fpm php artisan migrate:fresh --seed
 
 fresh: storage-clear db-fresh
+
+validate:
+	docker compose run --rm php-fpm composer run validate
+

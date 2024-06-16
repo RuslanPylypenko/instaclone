@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth:sanctum',
             UserConfirmedMiddleware::class,
         ]);
-       // $middleware->append(UserConfirmedMiddleware::class);
+        // $middleware->append(UserConfirmedMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

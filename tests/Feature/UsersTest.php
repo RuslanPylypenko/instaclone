@@ -21,7 +21,7 @@ class UsersTest extends TestCase
 
         UserEntity::factory(10)->create();
         $response = $this->actingAs($user, 'sanctum')
-        ->get(route('users.index'));
+            ->get(route('users.index'));
 
         $response->assertOk();
 
@@ -29,20 +29,20 @@ class UsersTest extends TestCase
 
         $response->assertJson([
             'data' => $users->map(fn ($item) => [
-                'id'         => $item->id,
+                'id' => $item->id,
                 'first_name' => $item->first_name,
-                'last_name'  => $item->last_name,
-                'avatar'     => $item->avatar,
-                'nick'       => $item->nick
+                'last_name' => $item->last_name,
+                'avatar' => $item->avatar,
+                'nick' => $item->nick,
             ])->toArray(),
             'meta' => [
-                'total'        => $users->count(),
-                'per_page'     => 15,
+                'total' => $users->count(),
+                'per_page' => 15,
                 'current_page' => 1,
-                'last_page'    => 1,
-                'from'         => 1,
-                'to'           => 11,
-            ]
+                'last_page' => 1,
+                'from' => 1,
+                'to' => 11,
+            ],
         ]);
     }
 }

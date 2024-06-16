@@ -8,7 +8,7 @@ class PasswordHasher
 {
     public function hash(string $password): string
     {
-       return Hash::make($password);
+        return Hash::make($password);
     }
 
     public function isValid(string $password, string $hash): bool

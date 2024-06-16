@@ -23,7 +23,7 @@ class PostsTest extends TestCase
     public function test_post_store(): void
     {
         $user = UserEntity::factory()->create([
-            'status' => UserStatus::ACTIVE
+            'status' => UserStatus::ACTIVE,
         ]);
 
         $data = [
@@ -47,7 +47,7 @@ class PostsTest extends TestCase
             'status' => UserStatus::ACTIVE,
         ]);
 
-        $post =  Post::factory()->create([
+        $post = Post::factory()->create([
             'author_id' => $user->id,
         ]);
 
@@ -59,11 +59,11 @@ class PostsTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'token'      => $post->token,
-                'text'       => $post->text,
-                'likes'      => $post->likes->count(),
+                'token' => $post->token,
+                'text' => $post->text,
+                'likes' => $post->likes->count(),
                 'created_at' => $post->created_at->format('Y-m-d H:i:s'),
-            ]
+            ],
         ]);
     }
 
@@ -96,20 +96,20 @@ class PostsTest extends TestCase
 
         $response->assertJson([
             'data' => $posts->map(function (Post $post) {
-                    return [
-                        'token'      => $post->token,
-                        'text'       => $post->text,
-                        'likes'      => $post->likes()->count(),
-                        'created_at' => $post->created_at->format('Y-m-d H:i:s'),
-                    ];
-                })->toArray(),
+                return [
+                    'token' => $post->token,
+                    'text' => $post->text,
+                    'likes' => $post->likes()->count(),
+                    'created_at' => $post->created_at->format('Y-m-d H:i:s'),
+                ];
+            })->toArray(),
             'meta' => [
-                'total'        => $posts->count(),
-                'per_page'     => 15,
+                'total' => $posts->count(),
+                'per_page' => 15,
                 'current_page' => 1,
-                'last_page'    => 1,
-                'from'         => 1,
-                'to'           => $posts->count(),
+                'last_page' => 1,
+                'from' => 1,
+                'to' => $posts->count(),
             ],
         ]);
     }

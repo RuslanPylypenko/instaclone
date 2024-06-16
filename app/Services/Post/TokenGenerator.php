@@ -8,6 +8,6 @@ class TokenGenerator
 {
     public function generate(): string
     {
-         return Str::random(12);
+        return Str::random(12);
     }
 }

@@ -18,7 +18,7 @@ class UsersRepository
 
     public function findByEmail(string $email): ?UserEntity
     {
-       return UserEntity::where('email', $email)->first();
+        return UserEntity::where('email', $email)->first();
     }
 
     /**
@@ -27,9 +27,9 @@ class UsersRepository
     public function findUncheckedInactive(): Collection
     {
         return UserEntity::query()
-        ->whereDate('last_visit', '<=', now()->add('-1 year'))
-        ->whereNot('status', '=', UserStatus::LONG_TIME_INACTIVE->value)
-        ->get();
+            ->whereDate('last_visit', '<=', now()->add('-1 year'))
+            ->whereNot('status', '=', UserStatus::LONG_TIME_INACTIVE->value)
+            ->get();
     }
 
     public function getByConfirmToken(string $token): UserEntity

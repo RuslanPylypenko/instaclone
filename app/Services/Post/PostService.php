@@ -9,9 +9,8 @@ class PostService
 {
     public function __construct(
         private TokenGenerator $tokenGenerator,
-        private ImageService   $imageService,
-    )
-    {
+        private ImageService $imageService,
+    ) {
     }
 
     /**
@@ -28,7 +27,7 @@ class PostService
         ]);
 
         foreach ($data['images'] as $image) {
-           $this->imageService->uploadImage($post, $image);
+            $this->imageService->uploadImage($post, $image);
         }
 
         foreach ($data['hashtags'] as $hashtag) {

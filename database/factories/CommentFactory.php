@@ -12,7 +12,7 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'text' => fake('uk-Ua')->paragraph()
+            'text' => fake('uk-Ua')->paragraph(),
         ];
     }
 }
