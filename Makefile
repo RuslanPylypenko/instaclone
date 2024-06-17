@@ -2,6 +2,8 @@ init: docker-down-clear storage-clear docker-pull docker-build docker-up api-ini
 up: docker-up
 build: docker-build
 down: docker-down
+fresh: storage-clear db-fresh
+api-init: composer-install wait-db migrate db-fresh
 
 docker-up:
 	docker-compose up -d
@@ -21,8 +23,6 @@ docker-pull:
 bash:
 	docker exec -it app bash
 
-api-init: composer-install wait-db migrate db-fresh
-
 storage-clear:
 	docker run --rm -v "${PWD}/storage/app/public:/storage/app/public" -w /storage/app/public alpine sh -c "rm -rf ./images/*"
 
@@ -41,11 +41,15 @@ migrate:
 db-fresh:
 	docker compose run --rm php-fpm php artisan migrate:fresh --seed
 
-fresh: storage-clear db-fresh
-
 validate:
 	docker compose run --rm php-fpm composer run validate
 
 test:
 	docker compose run --rm php-fpm php artisan test
+
+sentry-upgrade:
+	docker compose run --rm sentry sentry upgrade --noinput
+
+sentry-create-user:
+	docker compose run --rm sentry createuser --email "sentry@app.test" --password "secret123" --superuser --no-input
 
