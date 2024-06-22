@@ -6,10 +6,10 @@ fresh: storage-clear db-fresh
 api-init: composer-install wait-db migrate db-fresh
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d
 
 docker-build:
-	docker-compose build
+	docker compose build
 
 docker-down:
 	docker-compose down --remove-orphans
@@ -46,10 +46,4 @@ validate:
 
 test:
 	docker compose run --rm php-fpm php artisan test
-
-sentry-upgrade:
-	docker compose run --rm sentry sentry upgrade --noinput
-
-sentry-create-user:
-	docker compose run --rm sentry createuser --email "sentry@app.test" --password "secret123" --superuser --no-input
 
