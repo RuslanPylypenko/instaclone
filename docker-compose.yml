@@ -78,74 +78,9 @@ services:
     networks:
       - mynetwork
 
-  sentry:
-    platform: linux/amd64
-    container_name: sentry
-    image: sentry:latest
-    env_file:
-      - .env
-    ports:
-      - '9000:9000'
-    depends_on:
-      - sentry-db
-      - sentry-redis
-    tty: true
-    stdin_open: true
-    networks:
-      - mynetwork
-
-  sentry-cron:
-    platform: linux/amd64
-    container_name: sentry-cron
-    image: sentry:latest
-    command: "sentry run cron"
-    env_file:
-      - .env
-    depends_on:
-      - sentry-db
-      - sentry-redis
-    networks:
-      - mynetwork
-  sentry-worker:
-    platform: linux/amd64
-    container_name: sentry-worker
-    image: sentry:latest
-    command: "sentry run worker"
-    env_file:
-      - .env
-    depends_on:
-      - sentry-db
-      - sentry-redis
-    networks:
-      - mynetwork
-  sentry-redis:
-    container_name: sentry-redis
-    image: bitnami/redis:6.2.4
-    environment:
-      ALLOW_EMPTY_PASSWORD: yes
-    volumes:
-      - redis-data:/data
-    ports:
-      - '6379:6379'
-    networks:
-      - mynetwork
-  sentry-db:
-    container_name: sentry-postgres
-    image: postgres
-    environment:
-      POSTGRES_USER: sentry
-      POSTGRES_PASSWORD: secret
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    networks:
-      - mynetwork
 
 volumes:
-  redis-data:
   mysql-data:
-  pg-data:
 
 networks:
   mynetwork:
