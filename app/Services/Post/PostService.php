@@ -32,7 +32,7 @@ class PostService
         }
 
         foreach ($data['hashtags'] as $hashtag) {
-            $post->hashTags()->create(['name' => $hashtag]);
+            $post->hashTags()->create(['name' => $hashtag]); // todo check if exists
         }
 
         return $post;

@@ -23,7 +23,7 @@ class SignUp
     public function request(array $data): UserEntity
     {
         /** @var UserEntity $user */
-        $user = UserEntity::create([
+        $user = UserEntity::make([
             'first_name'    => $data['first_name'],
             'last_name'     => $data['last_name'] ?? null,
             'nick'          => $data['nick'],

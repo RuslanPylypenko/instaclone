@@ -15,6 +15,7 @@ class ImageService
 {
     public function uploadImage(Post $post, UploadedFile $image): void
     {
+        // TODO check if image is unique
         try {
             $path = sprintf(
                 '/images/%s/%s',

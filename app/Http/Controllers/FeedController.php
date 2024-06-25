@@ -19,6 +19,7 @@ class FeedController extends Controller
     {
         /** @var UserEntity $user */
         $user = $request->getUser();
+
         return response()->json([
             'data' => new SummaryCollection($this->postsRepository->getFeed($user))
         ]);
