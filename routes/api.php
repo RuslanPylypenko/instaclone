@@ -7,11 +7,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/users', [UserController::class, 'index']);
-
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
+    'prefix' => 'auth',
 ], function ($router) {
     Route::post('register', [RegisterController::class, 'register']);
     Route::get('confirm/{token}', [RegisterController::class, 'confirm'])->name('register.confirm');
@@ -20,11 +17,11 @@ Route::group([
     Route::get('reset-password/{token}', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
     Route::post('login', [LoginController::class, 'login']);
-    Route::post('logout',[LoginController::class,'logout']);
+    Route::post('logout', [LoginController::class, 'logout']);
 });
 
 Route::group([
-    'middleware' => ['api', 'auth:api'],
+    'middleware' => 'auth:confirmed',
 ], function ($router) {
     Route::post('/posts', [PostController::class, 'createPost'])->name('posts.store');
     Route::get('/posts/{token}', [PostController::class, 'show'])->name('posts.show');
@@ -34,4 +31,3 @@ Route::group([
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
-

@@ -13,6 +13,6 @@ enum UserStatus: string
 
     public static function all(): array
     {
-        return array_map(fn(UserStatus $status) => $status->value, self::cases());
+        return array_map(fn (UserStatus $status) => $status->value, self::cases());
     }
 }

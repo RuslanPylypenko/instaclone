@@ -17,7 +17,7 @@ class CheckInactiveJob implements ShouldQueue
 
     public function handle(UsersRepository $repository): void
     {
-        $repository->findUncheckedInactive()->each(function(UserEntity $entity) {
+        $repository->findUncheckedInactive()->each(function (UserEntity $entity) {
             $entity->setStatus(UserStatus::LONG_TIME_INACTIVE);
             $entity->save();
         });

@@ -2,7 +2,6 @@
 
 namespace App\UseCases\User;
 
-use App\Mail\Auth\ConfirmEmail;
 use App\Mail\Auth\ResetPasswordEmail;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;

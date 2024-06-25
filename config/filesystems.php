@@ -37,14 +37,14 @@ return [
         ],
 
         'ftp' => [
-            'driver'   => 'ftp',
-            'host'     => env('STORAGE_FTP_HOST', 'localhost'),
+            'driver' => 'ftp',
+            'host' => env('STORAGE_FTP_HOST', 'localhost'),
             'username' => env('STORAGE_FTP_USERNAME', 'app'),
             'password' => env('STORAGE_FTP_PASSWORD', 'password'),
-            'port'     => (int)env('FTP_PORT', 21),
-            'passive'  => false,
-            'ssl'      => false,
-            'timeout'  => 2,
+            'port' => (int) env('FTP_PORT', 21),
+            'passive' => false,
+            'ssl' => false,
+            'timeout' => 2,
         ],
 
         'public' => [

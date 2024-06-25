@@ -10,8 +10,8 @@ class ImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'        => $this->id,
-            'file_path' => $this->file_path
+            'id' => $this->id,
+            'file_path' => $this->file_path,
         ];
     }
 }

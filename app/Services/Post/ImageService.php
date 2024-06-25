@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Post;
 
 use App\Models\Post;
-use Dflydev\DotAccessData\Data;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;

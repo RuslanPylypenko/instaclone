@@ -4,7 +4,6 @@ namespace App\Mail\Auth;
 
 use App\Models\User\UserEntity;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -30,7 +29,7 @@ class ResetPasswordEmail extends Mailable
         return new Content(
             view: 'emails.auth.reset_password',
             with: [
-                'url' => route('')
+                'url' => route(''),
             ]
         );
     }

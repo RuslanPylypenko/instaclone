@@ -14,21 +14,19 @@ class UserController extends Controller
 {
     public function __construct(
         private UsersRepository $usersRepository,
-        private UserService $userService,
+        // private UserService $userService,
     ) {
     }
 
     public function index(Request $request): JsonResponse
     {
-        return response()->json([
-            'data' => new SummaryCollection($this->usersRepository->findAll($request->get('query')))
-        ]);
+        return response()->json(new SummaryCollection($this->usersRepository->findAll($request->get('query'))));
     }
 
     public function show(UserEntity $user): JsonResponse
     {
         return response()->json([
-            'data' => new DetailResource($user)
+            'data' => new DetailResource($user),
         ]);
     }
 
@@ -37,6 +35,7 @@ class UserController extends Controller
         /** @var UserEntity $auth */
         $auth = $request->user();
         $this->userService->follow($auth, $user);
+
         return response('', 200)->json();
     }
 
@@ -45,6 +44,7 @@ class UserController extends Controller
         /** @var UserEntity $auth */
         $auth = $request->user();
         $this->userService->unFollow($auth, $user);
+
         return response('', 200)->json();
     }
 }

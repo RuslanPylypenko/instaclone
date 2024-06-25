@@ -12,20 +12,20 @@ class SummaryCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function ($item) {
                 return [
-                    'id'         => $item->id,
+                    'id' => $item->id,
                     'first_name' => $item->first_name,
-                    'last_name'  => $item->last_name,
-                    'avatar'     => $item->avatar,
-                    'nick'       => $item->nick
+                    'last_name' => $item->last_name,
+                    'avatar' => $item->avatar,
+                    'nick' => $item->nick,
                 ];
             }),
             'meta' => [
-                'total'        => $this->total(),
-                'per_page'     => $this->perPage(),
+                'total' => $this->total(),
+                'per_page' => $this->perPage(),
                 'current_page' => $this->currentPage(),
-                'last_page'    => $this->lastPage(),
-                'from'         => $this->firstItem(),
-                'to'           => $this->lastItem(),
+                'last_page' => $this->lastPage(),
+                'from' => $this->firstItem(),
+                'to' => $this->lastItem(),
             ],
         ];
     }

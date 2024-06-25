@@ -19,30 +19,20 @@ class PostController extends Controller
 
     public function userPosts(int $userId): Response
     {
-        return response()->json([
-            'data' => new SummaryCollection($this->postsRepository->findByUserId($userId))
-        ]);
+        return response()->json(new SummaryCollection($this->postsRepository->findByUserId($userId)));
     }
 
     public function createPost(CreatePostRequest $request): Response
     {
-        //TODO guard
-        //$this->can('create', Post::class);
-        $user = auth()->user();
-        if ($user->isWait()) {
-            return response()->json([
-                'message' => 'You need to confirm your account. Please check your email.'
-            ], Response::HTTP_FORBIDDEN);
-        }
         return response()->json([
-            'data' => new DetailResource($this->postService->addPost($user, $request->all()))
+            'data' => new DetailResource($this->postService->addPost($request->user(), $request->all())),
         ], Response::HTTP_CREATED);
     }
 
     public function show(string $token): Response
     {
         return response()->json([
-            'data' => new DetailResource($this->postsRepository->getByToken($token))
+            'data' => new DetailResource($this->postsRepository->getByToken($token)),
         ]);
     }
 }
