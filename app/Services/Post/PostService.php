@@ -9,8 +9,9 @@ class PostService
 {
     public function __construct(
         private TokenGenerator $tokenGenerator,
-        private ImageService $imageService,
-    ) {
+        private ImageService   $imageService,
+    )
+    {
     }
 
     /**
@@ -26,12 +27,16 @@ class PostService
             'likes' => 0,
         ]);
 
-        foreach ($data['images'] as $image) {
-            $this->imageService->uploadImage($post, $image);
+        if (!empty($data['images']) && is_array($data['images'])) {
+            foreach ($data['images'] as $image) {
+                $this->imageService->uploadImage($post, $image);
+            }
         }
 
-        foreach ($data['hashtags'] as $hashtag) {
-            $post->hashTags()->create(['name' => $hashtag]); // todo check if exists
+        if (!empty($data['hashtags']) && is_array($data['hashtags'])) {
+            foreach ($data['hashtags'] as $hashtag) {
+                $post->hashTags()->create(['name' => $hashtag]); // todo check if exists
+            }
         }
 
         return $post;
@@ -39,7 +44,25 @@ class PostService
 
     public function updatePost(Post $post, array $data): Post
     {
+        $post->update([
+            'text' => $data['text'],
+            'likes' => $data['likes'],
+        ]);
 
+        if (!empty($data['images']) && is_array($data['images'])) {
+            foreach ($data['images'] as $image) {
+                $this->imageService->uploadImage($post, $image);
+            }
+        }
+
+        if (!empty($data['hashtags']) && is_array($data['hashtags'])) {
+            $post->hashTags()->delete();
+            foreach ($data['hashtags'] as $hashtag) {
+                $post->hashTags()->create(['name' => $hashtag]);
+            }
+        }
+
+        return $post;
     }
 
     public function deletePost(Post $post): void

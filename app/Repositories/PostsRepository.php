@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\HashTag;
 use App\Models\Post;
 use App\Models\User\UserEntity;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostsRepository
@@ -16,9 +17,14 @@ class PostsRepository
         return Post::query()->where('author_id', $userId)->paginate();
     }
 
-    public function getByToken(string $token): Post
+    public function getByToken(string $token): Model
     {
         return Post::query()->where('token', $token)->firstOrFail();
+    }
+
+    public function getById(int $id): Model
+    {
+        return Post::query()->findOrFail($id);
     }
 
     public function findByHashTag(HashTag $hashtag): LengthAwarePaginator

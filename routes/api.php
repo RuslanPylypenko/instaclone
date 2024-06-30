@@ -24,6 +24,7 @@ Route::group([
     'middleware' => 'auth:confirmed',
 ], function ($router) {
     Route::post('/posts', [PostController::class, 'createPost'])->name('posts.store');
+    Route::post('/posts/{id}', [PostController::class, 'updatePost'])->name('posts.update');
     Route::get('/posts/{token}', [PostController::class, 'show'])->name('posts.show');
 
     Route::get('/users/{userId}/posts', [PostController::class, 'userPosts'])->name('users.show.posts');
