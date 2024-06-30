@@ -4,6 +4,8 @@ namespace App\Services\Post;
 
 use App\Models\Post;
 use App\Models\User\UserEntity;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostService
 {
@@ -67,7 +69,29 @@ class PostService
 
     public function deletePost(Post $post): void
     {
+        try {
+            DB::transaction(function () use ($post) {
+                if ($post->images()->exists()) {
+                    $post->images()->delete();
+                }
 
+                if ($post->hashTags()->exists()) {
+                    $post->hashTags()->delete();
+                }
+
+                if ($post->comments()->exists()) {
+                    $post->comments()->delete();
+                }
+
+                if ($post->likes()->exists()) {
+                    $post->likes()->delete();
+                }
+
+                $post->delete();
+            });
+        } catch (\Exception $e) {
+            Log::error('Failed to delete post: ' . $e->getMessage());
+        }
     }
 
     public function addLike(Post $post): int

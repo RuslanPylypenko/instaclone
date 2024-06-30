@@ -51,4 +51,13 @@ class PostController extends Controller
             'data' => new DetailResource($this->postsRepository->getByToken($token)),
         ]);
     }
+
+    public function deletePost(int $postId): Response
+    {
+        /** @var Post $post */
+        $post = $this->postsRepository->getById($postId);
+        $this->postService->deletePost($post);
+
+        return response()->noContent();
+    }
 }
