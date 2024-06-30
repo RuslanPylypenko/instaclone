@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 class PostController extends Controller
 {
     public function __construct(
-        private PostsRepository $postsRepository,
-        private PostService $postService,
+        private readonly PostsRepository $postsRepository,
+        private readonly PostService     $postService,
     ) {
     }
 
