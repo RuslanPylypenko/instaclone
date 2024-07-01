@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-
         $middleware->group('auth:confirmed', [
             'auth:sanctum',
             UserConfirmedMiddleware::class,
@@ -24,5 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(UserConfirmedMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->report(function (\Throwable $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        });
     })->create();

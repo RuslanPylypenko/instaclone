@@ -10,6 +10,8 @@ use App\Models\Post;
 use App\Repositories\PostsRepository;
 use App\Services\Post\PostService;
 use Exception;
+use App\UseCases\Post\Likes;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
@@ -17,6 +19,7 @@ class PostController extends Controller
     public function __construct(
         private readonly PostsRepository $postsRepository,
         private readonly PostService     $postService,
+        private readonly Likes $likes,
     ) {
     }
 
@@ -50,6 +53,13 @@ class PostController extends Controller
         return response()->json([
             'data' => new DetailResource($this->postsRepository->getByToken($token)),
         ]);
+    }
+
+    public function addLike(Request $request, Post $post): Response
+    {
+        $this->likes->likeOrUnlike($request->user(), $post);
+
+        return response()->json([], Response::HTTP_CREATED);
     }
 
     public function deletePost(int $postId): Response

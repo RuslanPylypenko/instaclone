@@ -29,6 +29,34 @@ class Post extends Model
 
     protected $guarded = [];
 
+
+    //==========================================
+
+    public function addLike(UserEntity $user): void
+    {
+        if ($this->hasLike($user)) {
+            throw new \Exception("You've already liked this post.");
+        }
+
+        $this->likes()->save($user);
+    }
+
+    public function removeLike(UserEntity $user): void
+    {
+        if (!$this->hasLike($user)) {
+            throw new \Exception("You've already liked this post.");
+        }
+
+        $this->likes()->where('user_id', $user->id)->delete();
+    }
+
+    public function hasLike(UserEntity $user): bool
+    {
+       return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    //==========================================
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(UserEntity::class);
