@@ -6,6 +6,7 @@ namespace App\Services\Post;
 
 use App\Models\Post;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,19 +14,23 @@ class ImageService
 {
     public function uploadImage(Post $post, UploadedFile $image): void
     {
-        $path = sprintf(
-            '/images/%s/%s',
-            Str::random(3),
-            $image->getClientOriginalName(),
-        );
+        // TODO check if image is unique
+        try {
+            $path = sprintf(
+                '/images/%s/%s',
+                Str::random(3),
+                $image->getClientOriginalName(),
+            );
 
-        if (Storage::put($path, $image->getContent())) {
-            $post->images()->create([
-                'file_path' => $path,
-            ]);
-        } else {
-            throw new \Exception('Failed to upload image');
+            if (Storage::put($path, $image->getContent())) {
+                $post->images()->create([
+                    'file_path' => $path,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage() . $e->getFile() . $e->getLine());
         }
+
     }
 
     public function removeImage(string $path): void

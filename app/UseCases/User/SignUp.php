@@ -23,15 +23,15 @@ class SignUp
     public function request(array $data): UserEntity
     {
         /** @var UserEntity $user */
-        $user = UserEntity::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'] ?? null,
-            'nick' => $data['nick'],
-            'email' => $data['email'],
-            'password' => $this->passwordHasher->hash($data['password']),
-            'birth_date' => $data['birth_date'],
+        $user = UserEntity::make([
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'] ?? null,
+            'nick'          => $data['nick'],
+            'email'         => $data['email'],
+            'password'      => $this->passwordHasher->hash($data['password']),
+            'birth_date'    => $data['birth_date'],
             'confirm_token' => $this->tokenizer->generate(),
-            'status' => UserStatus::WAIT->value,
+            'status'        => UserStatus::WAIT->value,
         ]);
 
         $this->mailer->to($user->email)->send(new ConfirmEmail($user));

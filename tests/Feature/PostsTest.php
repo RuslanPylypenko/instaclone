@@ -113,4 +113,26 @@ class PostsTest extends TestCase
             ],
         ]);
     }
+
+    public function test_post_store_by_inactive_user(): void
+    {
+        $user = UserEntity::factory()->create([
+            'status' => UserStatus::WAIT
+        ]);
+
+        $data = [
+            'text' => fake()->text,
+            'images' => [File::create('image.jpg', 1990)],
+            'hashtags' => ['test'],
+        ];
+
+        $response = $this->actingAs($user, 'api')->post(
+            route('posts.store'),
+            $data,
+            ['Accept' => 'application/json']
+        );
+
+        $this->assertDatabaseCount('posts', 0);
+        $response->assertForbidden();
+    }
 }

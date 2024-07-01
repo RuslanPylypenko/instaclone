@@ -59,8 +59,8 @@ services:
 
   ftp-server:
     environment:
-      - FTP_PASS=${STORAGE_FTP_PASSWORD:-app}
-      - FTP_USER=${STORAGE_FTP_USERNAME:-password}
+      - FTP_PASS=${STORAGE_FTP_PASSWORD:-password}
+      - FTP_USER=${STORAGE_FTP_USERNAME:-app}
     image: garethflowers/ftp-server
     ports:
       - '20-21:20-21/tcp'

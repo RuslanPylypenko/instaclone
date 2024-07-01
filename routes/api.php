@@ -23,11 +23,18 @@ Route::group([
 Route::group([
     'middleware' => 'auth:confirmed',
 ], function ($router) {
-    Route::post('/posts', [PostController::class, 'createPost'])->name('posts.store');
-    Route::get('/posts/{token}', [PostController::class, 'show'])->name('posts.show');
 
-    Route::get('/users/{userId}/posts', [PostController::class, 'userPosts'])->name('users.show.posts');
+    Route::prefix('posts')->group(function () {
+        Route::post('/', [PostController::class, 'createPost'])->name('posts.store');
+        Route::patch('/{id}', [PostController::class, 'updatePost'])->name('posts.update');
+        Route::get('/{token}', [PostController::class, 'show'])->name('posts.show');
+        Route::delete('/delete/{id}', [PostController::class, 'deletePost'])->name('posts.destroy');
+    });
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::prefix('users')->group(function () {
+        Route::get('/users/{userId}/posts', [PostController::class, 'userPosts'])->name('users.show.posts');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    });
 });
