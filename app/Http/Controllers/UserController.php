@@ -6,6 +6,7 @@ use App\Http\Resources\User\DetailResource;
 use App\Http\Resources\User\SummaryCollection;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
+use App\UseCases\Post\Likes;
 use App\UseCases\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ class UserController extends Controller
 {
     public function __construct(
         private UsersRepository $usersRepository,
-        // private UserService $userService,
+        private Likes $likes,
+         //private UserService $userService,
     ) {
     }
 
@@ -46,5 +48,12 @@ class UserController extends Controller
         $this->userService->unFollow($auth, $user);
 
         return response('', 200)->json();
+    }
+
+    public function userLikes(Request $request): JsonResponse
+    {
+        return response([
+            'data' =>  $this->likes->getUserLikes($request->user())
+        ], 200)->json();
     }
 }

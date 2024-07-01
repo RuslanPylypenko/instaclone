@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Resources\Post\DetailResource;
 use App\Http\Resources\Post\SummaryCollection;
+use App\Models\Post;
 use App\Repositories\PostsRepository;
 use App\Services\Post\PostService;
+use App\UseCases\Post\Likes;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
@@ -14,6 +17,7 @@ class PostController extends Controller
     public function __construct(
         private PostsRepository $postsRepository,
         private PostService $postService,
+        private Likes $likes,
     ) {
     }
 
@@ -34,5 +38,12 @@ class PostController extends Controller
         return response()->json([
             'data' => new DetailResource($this->postsRepository->getByToken($token)),
         ]);
+    }
+
+    public function addLike(Request $request, Post $post): Response
+    {
+        $this->likes->likeOrUnlike($request->user(), $post);
+
+        return response()->json([], Response::HTTP_CREATED);
     }
 }

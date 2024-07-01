@@ -105,6 +105,24 @@ class UserEntity extends Authenticatable
         $this->reset_password_token = null;
     }
 
+    public function follow(UserEntity $follower): void
+    {
+        if ($this->followers()->find($follower->id)->exists()) {
+            throw new \LogicException('User is already a follower.');
+        }
+
+        $this->followers()->attach($follower->id);
+    }
+
+    public function unfollow(UserEntity $follower): void
+    {
+        if (!$this->followers()->find($follower->id)->exists()) {
+            throw new \LogicException('User is not a follower.');
+        }
+
+        $this->followers()->detach($follower->id);
+    }
+
     //================================
 
     public function posts()
