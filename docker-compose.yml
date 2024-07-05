@@ -2,6 +2,8 @@ services:
   nginx:
     build:
       context: ./docker/nginx
+    volumes:
+      - .:/var/www/html
     ports:
       - "8081:80"
     depends_on:

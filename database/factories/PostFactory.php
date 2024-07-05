@@ -13,7 +13,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'token' => app(TokenGenerator::class)->generate(),
+            'token' => random_int(0, 1000) . 'txt',
             'text' => fake('uk-Ua')->text,
         ];
     }
