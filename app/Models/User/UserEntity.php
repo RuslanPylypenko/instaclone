@@ -5,6 +5,7 @@ namespace App\Models\User;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Services\PasswordHasher;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,12 +23,15 @@ use Laravel\Sanctum\HasApiTokens;
  * @property null|string $last_name
  * @property null|string $avatar
  * @property null|string $bio
- * @property \DateTime $last_visit
- * @property \DateTime $birth_date
+ * @property DateTime $last_visit
+ * @property DateTime $birth_date
  * @property null|string $confirm_token
  * @property null|string $reset_password_token
- * @property \DateTime $created_at
- * @property \DateTime $updated_at
+ * @property DateTime $created_at
+ * @property DateTime $updated_at
+ * @property DateTime $deleted_at
+ * @property string $login_token
+ * @property DateTime $login_token_expires_at
  */
 class UserEntity extends Authenticatable
 {

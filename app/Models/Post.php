@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User\UserEntity;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +18,8 @@ use Illuminate\Support\Collection;
  * @property string $text
  * @property int $authorId
  * @property Collection<PostLike> $likes
- * @property \DateTime $createDate
- * @property \DateTime $updateDate
+ * @property DateTime $createDate
+ * @property DateTime $updateDate
  * @property UserEntity $author
  * @property Carbon $created_at
  */

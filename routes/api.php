@@ -21,7 +21,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'auth:confirmed',
+    'middleware' => ['auth:confirmed', 'token.expiry'],
 ], function ($router) {
 
     Route::prefix('posts')->group(function () {

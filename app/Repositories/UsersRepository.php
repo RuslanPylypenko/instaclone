@@ -16,9 +16,9 @@ class UsersRepository
         return UserEntity::query()->paginate();
     }
 
-    public function findByEmail(string $email): ?UserEntity
+    public function findByEmail(string $email): ?object
     {
-        return UserEntity::where('email', $email)->first();
+        return UserEntity::query()->where('email', $email)->first();
     }
 
     /**
@@ -40,5 +40,10 @@ class UsersRepository
     public function getByResetPasswordToken(string $token): UserEntity
     {
         return UserEntity::where('reset_password_token', $token)->firstOrFail();
+    }
+
+    public function findByToken(string $token): UserEntity
+    {
+        return UserEntity::where('token', $token)->firstOrFail();
     }
 }

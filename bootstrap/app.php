@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckTokenExpiry;
 use App\Http\Middleware\UserConfirmedMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth:sanctum',
             UserConfirmedMiddleware::class,
         ]);
+        $middleware->append('token.expiry', CheckTokenExpiry::class);
+        // $middleware->append(UserConfirmedMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->report(function (\Throwable $exception) {
