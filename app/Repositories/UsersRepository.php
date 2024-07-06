@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\User\UserEntity;
 use App\Models\User\UserStatus;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UsersRepository
@@ -37,13 +38,19 @@ class UsersRepository
         return UserEntity::where('confirm_token', $token)->firstOrFail();
     }
 
-    public function getByResetPasswordToken(string $token): UserEntity
+    /**
+     * @return UserEntity|null
+     */
+    public function getByResetPasswordToken(string $token): ?Model
     {
-        return UserEntity::where('reset_password_token', $token)->firstOrFail();
+        return UserEntity::query()->where('reset_password_token', $token)->firstOrFail();
     }
 
-    public function findByToken(string $token): UserEntity
+    /**
+     * @return UserEntity|null>
+     */
+    public function findByToken(string $token): ?Model
     {
-        return UserEntity::where('token', $token)->firstOrFail();
+        return UserEntity::query()->where('token', $token)->firstOrFail();
     }
 }

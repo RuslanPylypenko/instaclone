@@ -4,21 +4,19 @@ namespace App\ValueObjects;
 
 use Carbon\Carbon;
 use DateTime;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
-class TokenValueObject
+readonly class TokenValueObject
 {
-    public function __construct
-    (
-        public string   $token,
+    public function __construct(
+        public string $token,
         public DateTime $expiresAt
-    )
-    {
+    ) {
     }
 
-    public static function create(int $userId): TokenValueObject
+    public static function create(): TokenValueObject
     {
-        $token = hash('sha256', $userId . time());
+        $token = Str::random(32);
         $expiresAt = Carbon::now()->addDay();
 
         return new self($token, $expiresAt);
@@ -28,5 +26,4 @@ class TokenValueObject
     {
         return Carbon::now()->greaterThan($this->expiresAt);
     }
-
 }

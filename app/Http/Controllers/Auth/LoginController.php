@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
-use App\ValueObjects\TokenValueObject;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -47,15 +45,10 @@ class LoginController extends Controller implements HasMiddleware
             ], 401);
         }
 
-//        $token = $user->createToken($user->nick.'-AuthToken')->plainTextToken;
-
-        $token = TokenValueObject::create($user->id);
-        $user->login_token = $token->token;
-        $user->login_token_expires_at = $token->expiresAt;
-        $user->save();
+        $token = $user->createToken($user->nick.'-AuthToken')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token->token,
+            'access_token' => $token,
         ]);
     }
 

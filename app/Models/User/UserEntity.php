@@ -5,7 +5,9 @@ namespace App\Models\User;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Services\PasswordHasher;
+use App\ValueObjects\TokenValueObject;
 use DateTime;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,8 +32,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property DateTime $created_at
  * @property DateTime $updated_at
  * @property DateTime $deleted_at
- * @property string $login_token
- * @property DateTime $login_token_expires_at
+ * @property DateTime $confirm_token_expires_at
+ * @property TokenValueObject|null $confirmToken
  */
 class UserEntity extends Authenticatable
 {
@@ -120,7 +122,7 @@ class UserEntity extends Authenticatable
 
     public function unfollow(UserEntity $follower): void
     {
-        if (!$this->followers()->find($follower->id)->exists()) {
+        if (! $this->followers()->find($follower->id)->exists()) {
             throw new \LogicException('User is not a follower.');
         }
 
@@ -157,5 +159,16 @@ class UserEntity extends Authenticatable
     public function likedPosts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'likes', 'user_id', 'id');
+    }
+
+    protected function confirmToken(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value, array $attributes) => new TokenValueObject($attributes['confirm_token'], $attributes['confirm_token_expires_at']),
+            set: fn (TokenValueObject $tokenValueObject) => [
+                'confirm_token' => $tokenValueObject->token,
+                'confirm_token_expires_at' => $tokenValueObject->expiresAt,
+            ]
+        );
     }
 }
