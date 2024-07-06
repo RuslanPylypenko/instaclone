@@ -31,10 +31,9 @@ class CreatePostTest extends TestCase
             'images' => [File::create('image.jpg', 1990)],
             'hashtags' => ['test'],
         ];
-        $response = $this->actingAs($user, 'sanctum')->post(
+        $response = $this->actingAs($user, 'sanctum')->postJson(
             route('posts.store'),
             $data,
-            ['Accept' => 'application/json']
         );
 
         $response->assertCreated();

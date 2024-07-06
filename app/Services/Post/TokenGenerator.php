@@ -6,36 +6,32 @@ use Illuminate\Support\Str;
 
 class TokenGenerator
 {
+    private string $token;
+    private \DateTime $expiresAt;
+
+    public function __construct()
+    {
+        $this->token = Str::random(12);
+        $this->expiresAt = now()->addDay();
+    }
+
     public function generate(): string
     {
-        return Str::random(12);
+        return $this->token;
     }
 
-    public function __construct(
-        string $token,
-        \DateTime $expiresAt
-    ) {
-    }
-
-    public static function create(\DateTime $dateTime)
+    public static function create(): TokenGenerator
     {
-        return new self(Str::random(12), $dateTime);
+        return new self();
     }
 
-    //    public function getExpiresAt(): \DateTime
-    //    {
-    //        return $this->expiresAt;
-    //    }
+    public function getExpiresAt(): \DateTime
+    {
+        return $this->expiresAt;
+    }
 
-    //    public function getToken(): string
-    //    {
-    //        return $this->token;
-    //
-    //    }
-
-    //    public function isExpired(): bool
-    //    {
-    //        return $this->expiresAt < new \DateTime();
-    //    }
-
+    public function isExpired(): bool
+    {
+        return now() > $this->expiresAt;
+    }
 }

@@ -12,7 +12,7 @@ class PostFactory extends Factory
 {
     public function definition(): array
     {
-        $tokenGenerator = new TokenGenerator();
+        $tokenGenerator = TokenGenerator::create();
         return [
             'token' => $tokenGenerator->generate(),
             'text' => fake('uk-Ua')->text,
