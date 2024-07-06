@@ -133,6 +133,6 @@ class PostsTest extends TestCase
         );
 
         $this->assertDatabaseCount('posts', 0);
-        $response->assertForbidden();
+        $response->assertUnauthorized();
     }
 }

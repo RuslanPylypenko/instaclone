@@ -19,7 +19,6 @@ class CreatePostRequest extends FormRequest
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'hashtags' => 'array',
             'hashtags.*' => 'string|max:255',
-            'author_id' => 'required|integer|exists:users,id',
             'likes' => 'integer',
         ];
     }

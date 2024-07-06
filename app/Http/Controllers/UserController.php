@@ -7,7 +7,7 @@ use App\Http\Resources\User\SummaryCollection;
 use App\Models\User\UserEntity;
 use App\Repositories\UsersRepository;
 use App\UseCases\Post\Likes;
-use App\UseCases\UserService;
+use App\UseCases\User\Subscriptions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class UserController extends Controller
     public function __construct(
         private UsersRepository $usersRepository,
         private Likes $likes,
-         //private UserService $userService,
+        private Subscriptions $subscriptions,
     ) {
     }
 
@@ -36,7 +36,7 @@ class UserController extends Controller
     {
         /** @var UserEntity $auth */
         $auth = $request->user();
-        $this->userService->follow($auth, $user);
+        $this->subscriptions->follow($auth, $user);
 
         return response('', 200)->json();
     }
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         /** @var UserEntity $auth */
         $auth = $request->user();
-        $this->userService->unFollow($auth, $user);
+        $this->subscriptions->unFollow($auth, $user);
 
         return response('', 200)->json();
     }
