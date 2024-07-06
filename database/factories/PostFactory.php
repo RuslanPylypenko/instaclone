@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Services\Post\TokenGenerator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,8 +12,9 @@ class PostFactory extends Factory
 {
     public function definition(): array
     {
+        $tokenGenerator = new TokenGenerator();
         return [
-            'token' => random_int(0, 1000).'txt',
+            'token' => $tokenGenerator->generate(),
             'text' => fake('uk-Ua')->text,
         ];
     }

@@ -16,10 +16,10 @@ use Illuminate\Support\Collection;
  * @property string $id
  * @property string $token
  * @property string $text
- * @property int $authorId
+ * @property int $author_id
  * @property Collection<PostLike> $likes
- * @property DateTime $createDate
- * @property DateTime $updateDate
+ * @property DateTime $create_date
+ * @property DateTime $update_date
  * @property UserEntity $author
  * @property Carbon $created_at
  */
