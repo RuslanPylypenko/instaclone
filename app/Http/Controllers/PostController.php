@@ -12,6 +12,7 @@ use App\Services\Post\PostService;
 use Exception;
 use App\UseCases\Post\Likes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
@@ -38,10 +39,14 @@ class PostController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    public function updatePost(int $postId, UpdatePostRequest $request): Response
+    public function updatePost(string $token, UpdatePostRequest $request): Response
     {
         /** @var Post $post */
-        $post = $this->postsRepository->getById($postId);
+        $post = $this->postsRepository->getByToken($token);
+
+        if ($post && !Gate::allows('update', $post)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
 
         return response()->json([
             'data' => new DetailResource($this->postService->updatePost($post, $request->all())),

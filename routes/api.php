@@ -26,7 +26,7 @@ Route::group([
 
     Route::prefix('posts')->group(function () {
         Route::post('/', [PostController::class, 'createPost'])->name('posts.store');
-        Route::patch('/{id}', [PostController::class, 'updatePost'])->name('posts.update');
+        Route::patch('/{token}', [PostController::class, 'updatePost'])->name('posts.update');
         Route::get('/{token}', [PostController::class, 'show'])->name('posts.show');
         Route::delete('/delete/{id}', [PostController::class, 'deletePost'])->name('posts.destroy');
     });

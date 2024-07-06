@@ -10,7 +10,7 @@ use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class PostsTest extends TestCase
+class CreatePostTest extends TestCase
 {
     use RefreshDatabase;
 

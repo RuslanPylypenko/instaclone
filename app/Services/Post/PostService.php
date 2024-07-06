@@ -26,7 +26,6 @@ class PostService
             'token' => $this->tokenGenerator->generate(),
             'text' => $data['text'],
             'author_id' => $user->getKey(),
-            'likes' => 0,
         ]);
 
         if (!empty($data['images']) && is_array($data['images'])) {
@@ -48,7 +47,6 @@ class PostService
     {
         $post->update([
             'text' => $data['text'],
-            'likes' => $data['likes'],
         ]);
 
         if (!empty($data['images']) && is_array($data['images'])) {
