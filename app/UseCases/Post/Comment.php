@@ -21,8 +21,8 @@ class Comment
 
     public function edit(CommentEntity $comment, string $text): CommentEntity
     {
-         $comment->update(['text' => $text]);
+        $comment->update(['text' => $text]);
 
-         return $comment;
+        return $comment;
     }
 }

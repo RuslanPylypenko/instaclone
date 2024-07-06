@@ -28,7 +28,7 @@ class ImageService
                 ]);
             }
         } catch (\Throwable $e) {
-            Log::error($e->getMessage() . $e->getFile() . $e->getLine());
+            Log::error($e->getMessage().$e->getFile().$e->getLine());
         }
 
     }

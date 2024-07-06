@@ -53,7 +53,7 @@ class UserController extends Controller
     public function userLikes(Request $request): JsonResponse
     {
         return response([
-            'data' =>  $this->likes->getUserLikes($request->user())
+            'data' => $this->likes->getUserLikes($request->user()),
         ], 200)->json();
     }
 }

@@ -117,7 +117,7 @@ class CreatePostTest extends TestCase
     public function test_post_store_by_inactive_user(): void
     {
         $user = UserEntity::factory()->create([
-            'status' => UserStatus::WAIT
+            'status' => UserStatus::WAIT,
         ]);
 
         $data = [

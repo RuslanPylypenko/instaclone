@@ -29,7 +29,6 @@ class Post extends Model
 
     protected $guarded = [];
 
-
     //==========================================
 
     public function addLike(UserEntity $user): void
@@ -43,7 +42,7 @@ class Post extends Model
 
     public function removeLike(UserEntity $user): void
     {
-        if (!$this->hasLike($user)) {
+        if (! $this->hasLike($user)) {
             throw new \Exception("You've already liked this post.");
         }
 
@@ -52,7 +51,7 @@ class Post extends Model
 
     public function hasLike(UserEntity $user): bool
     {
-       return $this->likes()->where('user_id', $user->id)->exists();
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 
     //==========================================

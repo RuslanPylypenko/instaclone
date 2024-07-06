@@ -11,9 +11,8 @@ class PostService
 {
     public function __construct(
         private TokenGenerator $tokenGenerator,
-        private ImageService   $imageService,
-    )
-    {
+        private ImageService $imageService,
+    ) {
     }
 
     /**
@@ -28,13 +27,13 @@ class PostService
             'author_id' => $user->getKey(),
         ]);
 
-        if (!empty($data['images']) && is_array($data['images'])) {
+        if (! empty($data['images']) && is_array($data['images'])) {
             foreach ($data['images'] as $image) {
                 $this->imageService->uploadImage($post, $image);
             }
         }
 
-        if (!empty($data['hashtags']) && is_array($data['hashtags'])) {
+        if (! empty($data['hashtags']) && is_array($data['hashtags'])) {
             foreach ($data['hashtags'] as $hashtag) {
                 $post->hashTags()->create(['name' => $hashtag]); // todo check if exists
             }
@@ -49,13 +48,13 @@ class PostService
             'text' => $data['text'],
         ]);
 
-        if (!empty($data['images']) && is_array($data['images'])) {
+        if (! empty($data['images']) && is_array($data['images'])) {
             foreach ($data['images'] as $image) {
                 $this->imageService->uploadImage($post, $image);
             }
         }
 
-        if (!empty($data['hashtags']) && is_array($data['hashtags'])) {
+        if (! empty($data['hashtags']) && is_array($data['hashtags'])) {
             $post->hashTags()->delete();
             foreach ($data['hashtags'] as $hashtag) {
                 $post->hashTags()->create(['name' => $hashtag]);
@@ -88,7 +87,7 @@ class PostService
                 $post->delete();
             });
         } catch (\Exception $e) {
-            Log::error('Failed to delete post: ' . $e->getMessage());
+            Log::error('Failed to delete post: '.$e->getMessage());
         }
     }
 

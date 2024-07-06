@@ -9,8 +9,8 @@ use App\Http\Resources\Post\SummaryCollection;
 use App\Models\Post;
 use App\Repositories\PostsRepository;
 use App\Services\Post\PostService;
-use Exception;
 use App\UseCases\Post\Likes;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class PostController extends Controller
 {
     public function __construct(
         private readonly PostsRepository $postsRepository,
-        private readonly PostService     $postService,
+        private readonly PostService $postService,
         private readonly Likes $likes,
     ) {
     }
