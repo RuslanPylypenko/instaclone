@@ -4,19 +4,22 @@ namespace App\Services\Post;
 
 use App\Models\Post;
 use App\Models\User\UserEntity;
+use App\UseCases\Post\Likes;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PostService
 {
     public function __construct(
-        private TokenGenerator $tokenGenerator,
-        private ImageService $imageService,
+        private readonly Likes          $likes,
+        private readonly ImageService   $imageService,
+        private readonly TokenGenerator $tokenGenerator
     ) {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function addPost(UserEntity $user, array $data): Post
     {
@@ -86,13 +89,16 @@ class PostService
 
                 $post->delete();
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to delete post: '.$e->getMessage());
         }
     }
 
-    public function addLike(Post $post): int
+    /**
+     * @throws Exception
+     */
+    public function addLike(UserEntity $user, Post $post): void
     {
-
+        $this->likes->likeOrUnlike($user, $post);
     }
 }

@@ -65,7 +65,7 @@ class PostController extends Controller
      */
     public function addLike(Request $request, Post $post): Response
     {
-        $this->likes->likeOrUnlike($request->user(), $post);
+        $this->postService->addLike($request->user(), $post);
 
         return response()->json([], Response::HTTP_CREATED);
     }
