@@ -60,6 +60,9 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function addLike(Request $request, Post $post): Response
     {
         $this->likes->likeOrUnlike($request->user(), $post);

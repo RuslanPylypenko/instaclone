@@ -25,6 +25,7 @@ Route::group([
 ], function ($router) {
 
     Route::prefix('posts')->group(function () {
+        Route::post('/{post}/like', [PostController::class, 'addLike'])->name('posts.like');
         Route::post('/', [PostController::class, 'createPost'])->name('posts.store');
         Route::patch('/{token}', [PostController::class, 'updatePost'])->name('posts.update');
         Route::get('/{token}', [PostController::class, 'show'])->name('posts.show');

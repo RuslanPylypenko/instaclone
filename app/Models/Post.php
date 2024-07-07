@@ -37,7 +37,8 @@ class Post extends Model
             throw new \Exception("You've already liked this post.");
         }
 
-        $this->likes()->save($user);
+        $like = new PostLike(['user_id' => $user->id]);
+        $this->likes()->save($like);
     }
 
     public function removeLike(UserEntity $user): void
